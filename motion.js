@@ -5,32 +5,36 @@
   const isAlias = document.documentElement.dataset.page === "alias";
 
   // ---- Logo symbol ----
-  // germ1 page: arrows closed on the dot at the top, opening as you scroll.
-  // Alias page: arrows open. Clicking the dot switches page with a transition.
+  // germ1 page: the arrows point in at the dot; closed at the top, they move apart as you scroll.
+  // Alias page: the symbol inverted, the arrows point out (up and down) away from the dot.
+  // Clicking the dot switches page with a transition.
   const top = document.querySelector(".brand-mark .arrow-top");
   const bottom = document.querySelector(".brand-mark .arrow-bottom");
   const hero = document.querySelector(".hero");
-  const OPEN = 70; // how far the arrows sit from the dot when "open" (symbol units, dot at 60,90)
-  const state = { gap: 0, flat: 0 };
-  // gap: distance of each arrow from the dot; flat: 0 = sharp chevrons, 1 = flattened
-  const shape = (gap, flat) => {
+  const OPEN = 70; // how far the arrows move apart when scrolled (symbol units, dot at 60,90)
+  const DIR = isAlias ? -1 : 1; // 1: heads at the dot end, -1: heads at the outer end
+  const state = { gap: 0 };
+  // gap: how far each arrow is pushed away from the dot
+  const shape = (gap) => {
     state.gap = gap;
-    state.flat = flat;
-    const drop = 32 * (1 - 0.8 * flat);
-    const ty = 79 - gap;
-    const by = 101 + gap;
-    top.setAttribute("d", `M60 ${-gap} V${ty} M28 ${ty - drop} L60 ${ty} L92 ${ty - drop}`);
-    bottom.setAttribute("d", `M60 ${180 + gap} V${by} M28 ${by + drop} L60 ${by} L92 ${by + drop}`);
+    // top arrow: stem from y0 to y1 (closest to the dot); the head sits on one end
+    const y0 = -gap;
+    const y1 = 79 - gap;
+    const head = DIR === 1 ? `M28 ${y1 - 32} L60 ${y1} L92 ${y1 - 32}` : `M28 ${y0 + 32} L60 ${y0} L92 ${y0 + 32}`;
+    top.setAttribute("d", `M60 ${y0} V${y1} ${head}`);
+    // bottom arrow: the mirror image
+    const m = (y) => 180 - y;
+    const headB = DIR === 1 ? `M28 ${m(y1 - 32)} L60 ${m(y1)} L92 ${m(y1 - 32)}` : `M28 ${m(y0 + 32)} L60 ${m(y0)} L92 ${m(y0 + 32)}`;
+    bottom.setAttribute("d", `M60 ${m(y0)} V${m(y1)} ${headB}`);
   };
   const easeOut = (k) => 1 - Math.pow(1 - k, 3);
   const easeInOut = (k) => (k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
-  const tween = (gap, flat, ms, ease = easeOut) => {
-    const from = { ...state };
+  const tween = (gap, ms, ease = easeOut) => {
+    const from = state.gap;
     const t0 = performance.now();
     const step = (now) => {
       const k = Math.min((now - t0) / ms, 1);
-      const e = ease(k);
-      shape(from.gap + (gap - from.gap) * e, from.flat + (flat - from.flat) * e);
+      shape(from + (gap - from) * ease(k));
       if (k < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
@@ -39,17 +43,17 @@
 
   if (top && bottom && hero) {
     if (isAlias) {
-      if (reduced) shape(OPEN, 1);
+      if (reduced) shape(0);
       else {
-        shape(200, 1); // arriving: the arrows come back in from the top and bottom edges
-        tween(OPEN, 1, 800);
+        shape(200); // arriving: the arrows come in from the top and bottom edges
+        tween(0, 800);
       }
     } else {
       const fromScroll = () => {
         if (switching) return;
         const p = Math.min(Math.max(window.scrollY / (hero.offsetHeight * 0.45), 0), 1);
         const e = 1 - (1 - p) * (1 - p); // ease out
-        shape(OPEN * e, e);
+        shape(OPEN * e);
       };
       if (!reduced) {
         let ticking = false;
@@ -87,9 +91,8 @@
       switching = true;
       // the symbol stays above the spreading colour so the arrows can be seen moving
       document.querySelector(".brand-mark").classList.add("is-switching");
-      // the arrows open (or close) at a pace you can follow, then the colour spreads
-      if (isAlias) tween(0, 0, 700, easeInOut);
-      else tween(320, 1, 1100, easeInOut);
+      // the arrows fly apart, up and down, at a pace you can follow; then the colour spreads
+      tween(320, 1100, easeInOut);
       const dot = portal.querySelector(".dot").getBoundingClientRect();
       const cx = dot.left + dot.width / 2;
       const cy = dot.top + dot.height / 2;
@@ -101,13 +104,12 @@
       document.body.appendChild(wipe);
       wipe.getBoundingClientRect(); // start the transition from the closed circle
       // let the arrows get going first, then the colour spreads from the dot
-      setTimeout(() => (wipe.style.clipPath = `circle(${radius}px at ${cx}px ${cy}px)`), isAlias ? 300 : 400);
+      setTimeout(() => (wipe.style.clipPath = `circle(${radius}px at ${cx}px ${cy}px)`), 400);
       // change page as soon as the screen is covered (the next page starts in the same colour)
       let gone = false;
       const go = () => {
         if (gone) return;
         gone = true;
-        try { sessionStorage.setItem("germ1-portal", "1"); } catch (err) {}
         location.href = portal.getAttribute("href");
       };
       wipe.addEventListener("transitionend", go);
@@ -119,7 +121,7 @@
       switching = false;
       document.querySelectorAll(".portal-wipe").forEach((w) => w.remove());
       document.querySelector(".brand-mark").classList.remove("is-switching");
-      if (isAlias) shape(OPEN, 1);
+      if (isAlias) shape(0);
       else window.dispatchEvent(new Event("scroll"));
     });
   }

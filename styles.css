@@ -29,12 +29,6 @@ html { font-size: 75%; } /* the whole site is sized at 75% (rem-based text follo
 }
 :root[data-page="alias"] .scp-wave canvas { --wave-rest: #4a4a4a; }
 
-/* smooth hand-over between germ1 and the alias page (browsers that support it) */
-@media (prefers-reduced-motion: no-preference) {
-  @view-transition { navigation: auto; }
-  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.35s; }
-}
-
 * { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
@@ -112,6 +106,7 @@ a:focus-visible, summary:focus-visible { outline: 1px solid var(--accent); outli
   color: var(--text);
 }
 [data-page="alias"] .brand-line { left: 0; }
+.name-accent { color: var(--accent); }
 .nav-alias { font-size: 1.25rem; font-weight: 400; line-height: 1; text-decoration: none; color: var(--text); }
 
 /* the dot of the symbol is a door between germ1 and the alias */

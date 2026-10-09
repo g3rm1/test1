@@ -23,7 +23,11 @@
   // On index.html the name in the header and hero is the germ1 logo;
   // on alias.html it's written out as text.
   $("nav-name").setAttribute("aria-label", a.name);
-  document.querySelectorAll("[data-artist-name]").forEach((el) => (el.textContent = a.name));
+  document.querySelectorAll("[data-artist-name]").forEach((el) => {
+    // the first letter in orange, like the "1" of germ1
+    const [first = "", ...rest] = [...(a.name || "")];
+    el.innerHTML = `<span class="name-accent">${escape(first)}</span>${escape(rest.join(""))}`;
+  });
   // Tagline under the logo: only shown when one is set in content.js
   if (a.tagline && $("artist-tagline")) {
     $("artist-tagline").textContent = a.tagline;
