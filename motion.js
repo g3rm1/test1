@@ -49,13 +49,13 @@
   if (!canvas || !canvas.getContext) return;
   const ctx = canvas.getContext("2d");
 
-  const CELL = 18; // pixel size in CSS px
-  const GAP = 3;
-  const FPS = 14; // low frame rate = stepped, pixel-art feel
+  const CELL = 8; // pixel size in CSS px
+  const GAP = 2;
+  const FPS = 10; // low frame rate = stepped, pixel-art feel
   const BPM = 124;
-  const COLORS = ["#ff6a13", "#ff6a13", "#ff8a00", "#ffa400", "#ffc53d"]; // bottom -> top
-  const OFF = "rgba(255,255,255,0.035)";
-  const PEAK = "#e6e6e6";
+  const COLORS = ["#ff6a13", "#ff6a13", "#ff7a1f", "#ff8a2e"]; // bottom -> top
+  const OFF = "rgba(255,255,255,0.03)";
+  const PEAK = "rgba(230,230,230,0.5)";
 
   let cols = 0, rows = 0, reveal = [], peaks = [], phases = [];
   let mouseX = -1;
@@ -79,13 +79,12 @@
     const x = c / Math.max(cols - 1, 1); // 0 = bass (left), 1 = treble (right)
     const beatT = (t * BPM) / 60;
     const kick = Math.exp(-(beatT % 1) * 5); // decays after each beat
-    const bass = (1 - x) ** 2 * kick * 0.55;
+    const bass = (1 - x) ** 2 * kick * 0.3;
     const wobble =
-      0.22 * Math.sin(t * (1.3 + x * 3) + phases[c]) +
-      0.12 * Math.sin(t * (4.1 + x * 7) + phases[c] * 2.3);
-    const hat = x > 0.6 && beatT % 0.5 < 0.12 ? 0.15 * x : 0;
-    let v = 0.28 + bass + wobble + hat;
-    if (mouseX >= 0) v += 0.45 * Math.exp(-(((c - mouseX) / 3) ** 2)); // cursor boosts nearby bars
+      0.14 * Math.sin(t * (0.8 + x * 1.5) + phases[c]) +
+      0.06 * Math.sin(t * (2.2 + x * 3) + phases[c] * 2.3);
+    let v = 0.3 + bass + wobble;
+    if (mouseX >= 0) v += 0.2 * Math.exp(-(((c - mouseX) / 4) ** 2)); // cursor gently lifts nearby bars
     return Math.max(0.04, Math.min(v, 1));
   }
 
@@ -94,7 +93,7 @@
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (let c = 0; c < cols; c++) {
       const h = Math.round(level(c, t) * rows);
-      peaks[c] = Math.max(h, peaks[c] - 0.35);
+      peaks[c] = Math.max(h, peaks[c] - 0.25);
       const peakRow = Math.round(peaks[c]);
       for (let r = 0; r < rows; r++) {
         if (reveal[c * rows + r] > t) continue;

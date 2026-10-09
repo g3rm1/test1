@@ -78,6 +78,10 @@
   }
 
   // ---- Players ----
+  const scPlayer = (url) =>
+    "https://w.soundcloud.com/player/?url=" + encodeURIComponent(url) +
+    "&color=%23ff6a13&auto_play=false&hide_related=true&show_comments=false&visual=false";
+
   // Turns a SoundCloud / Mixcloud / YouTube / Spotify / audio-file link into a player.
   const player = (url) => {
     if (!url) return "";
@@ -93,9 +97,9 @@
       return `<audio controls preload="none" src="${escape(url)}"></audio>`;
     }
     if (host.endsWith("soundcloud.com") && !host.startsWith("w.")) {
-      const src = "https://w.soundcloud.com/player/?url=" + encodeURIComponent(url) +
-        "&color=%23ff6a13&auto_play=false&hide_related=true&show_comments=false&visual=false";
-      return `<iframe height="166" allow="autoplay" loading="lazy" src="${escape(src)}"></iframe>`;
+      // Short "on.soundcloud.com" share links get resolved to the full address after the page loads.
+      const short = host === "on.soundcloud.com" ? ` data-sc-short="${escape(url)}"` : "";
+      return `<iframe height="166" allow="autoplay" loading="lazy"${short} src="${escape(scPlayer(url))}"></iframe>`;
     }
     if (host === "mixcloud.com") {
       const src = "https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&light=0&feed=" + encodeURIComponent(u.pathname);
@@ -119,13 +123,15 @@
     return `<a class="btn" href="${escape(url)}" target="_blank" rel="noopener">Listen on ${escape(name.charAt(0).toUpperCase() + name.slice(1))}</a>`;
   };
 
-  const byNewest = (list) => (list || []).slice().sort((x, y) => parseDate(y.date) - parseDate(x.date));
+  // Newest first; items without a date go to the top.
+  const time = (item) => (item.date ? parseDate(item.date).getTime() : Infinity);
+  const byNewest = (list) => (list || []).slice().sort((x, y) => time(y) - time(x));
 
   const cardHtml = (item, extraMeta) => {
     const meta = [formatDate(item.date), extraMeta].filter(Boolean).join(" · ");
     return `
       <article class="card">
-        <h3>${escape(item.title)}</h3>
+        <h3${item.title ? "" : " data-auto-title"}>${escape(item.title || "SoundCloud")}</h3>
         ${meta ? `<p class="meta">${escape(meta)}</p>` : ""}
         ${item.description ? `<p class="desc">${escape(item.description)}</p>` : ""}
         ${player(item.url)}
@@ -141,4 +147,18 @@
   $("tracks-list").innerHTML = tracks.length
     ? tracks.map((t) => cardHtml(t, t.label)).join("")
     : `<p class="empty">Releases coming soon.</p>`;
+
+  // Ask SoundCloud for the full address (and title) behind short share links.
+  document.querySelectorAll("iframe[data-sc-short]").forEach((frame) => {
+    fetch("https://soundcloud.com/oembed?format=json&url=" + encodeURIComponent(frame.dataset.scShort))
+      .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((info) => {
+        const src = (info.html || "").match(/src="([^"]+)"/);
+        const full = src && new URL(src[1].replace(/&amp;/g, "&")).searchParams.get("url");
+        if (full) frame.src = scPlayer(full);
+        const title = frame.closest(".card").querySelector("h3[data-auto-title]");
+        if (title && info.title) title.textContent = info.title;
+      })
+      .catch(() => {}); // keep the player built from the short link
+  });
 })();

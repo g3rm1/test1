@@ -63,10 +63,10 @@ window.SITE = {
 
   sets: [
     {
-      title: "Live at Club Name — Closing Set",
-      date: "2026-09-12",
-      description: "3 hours of deep house and minimal.",
-      url: "https://soundcloud.com/forss/flickermood",
+      title: "", // left empty: the title is taken from SoundCloud
+      date: "",
+      description: "",
+      url: "https://on.soundcloud.com/occgcQX6qPFHogPoMt",
     },
     {
       title: "Studio Mix #01",
