@@ -18,8 +18,8 @@
   // ---- Artist ----
   const a = site.artist;
   document.title = a.name;
-  $("nav-name").textContent = a.name;
-  $("artist-name").textContent = a.name;
+  // The name in the header and hero is the germ1 logo (see index.html).
+  $("nav-name").setAttribute("aria-label", a.name);
   $("artist-tagline").textContent = a.tagline;
   $("artist-bio").textContent = a.bio;
   $("footer-text").textContent = `© ${new Date().getFullYear()} ${a.name}`;
