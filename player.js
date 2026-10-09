@@ -167,7 +167,7 @@
   // ---- Fixed player bar ----
   document.body.insertAdjacentHTML(
     "beforeend",
-    `<div class="pbar" id="pbar" hidden>
+    `<div class="pbar" id="pbar" hidden><div class="pbar-inner">
       <button class="pbar-play" type="button" aria-label="Play">
         <svg class="px" viewBox="0 0 7 7" shape-rendering="crispEdges" aria-hidden="true"><path class="i-play" d="M2 0h1v7h-1z M3 1h1v5h-1z M4 2h1v3h-1z M5 3h1v1h-1z"/><path class="i-pause" d="M1 0h2v7h-2z M4 0h2v7h-2z"/></svg>
       </button>
@@ -180,7 +180,7 @@
       <button class="pbar-close" type="button" aria-label="Stop and close player">
         <svg class="px" viewBox="0 0 7 7" shape-rendering="crispEdges" aria-hidden="true"><path d="M1 1h1v1h-1z M2 2h1v1h-1z M3 3h1v1h-1z M4 4h1v1h-1z M5 5h1v1h-1z M5 1h1v1h-1z M4 2h1v1h-1z M2 4h1v1h-1z M1 5h1v1h-1z"/></svg>
       </button>
-    </div>`
+    </div></div>`
   );
   const bar = document.getElementById("pbar");
   const q = (sel) => bar.querySelector(sel);
