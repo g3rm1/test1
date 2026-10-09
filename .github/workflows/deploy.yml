@@ -27,7 +27,7 @@ jobs:
       - name: Collect site files
         run: |
           mkdir _site
-          cp index.html styles.css app.js content.js motion.js favicon.svg _site/
+          cp index.html styles.css app.js content.js motion.js player.js favicon.svg _site/
           for d in images audio; do [ -d "$d" ] && cp -r "$d" _site/ || true; done
           # Version the CSS/JS links so browsers load the latest files after each update
           sed -i -E "s/(href|src)=\"([a-z]+\.(css|js))\"/\1=\"\2?v=${GITHUB_SHA::7}\"/g" _site/index.html

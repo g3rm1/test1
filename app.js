@@ -78,10 +78,6 @@
   }
 
   // ---- Players ----
-  const scPlayer = (url) =>
-    "https://w.soundcloud.com/player/?url=" + encodeURIComponent(url) +
-    "&color=%23ff6a13&auto_play=false&hide_related=true&show_comments=false&visual=false";
-
   // Turns a SoundCloud / Mixcloud / YouTube / Spotify / audio-file link into a player.
   const player = (url) => {
     if (!url) return "";
@@ -97,9 +93,17 @@
       return `<audio controls preload="none" src="${escape(url)}"></audio>`;
     }
     if (host.endsWith("soundcloud.com") && !host.startsWith("w.")) {
-      // Short "on.soundcloud.com" share links get resolved to the full address after the page loads.
-      const short = host === "on.soundcloud.com" ? ` data-sc-short="${escape(url)}"` : "";
-      return `<iframe height="166" allow="autoplay" loading="lazy"${short} src="${escape(scPlayer(url))}"></iframe>`;
+      // Custom germ1 player, brought to life by player.js
+      return `
+        <div class="scp" data-sc-url="${escape(url)}">
+          <button class="scp-play" type="button" aria-label="Play" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-play" d="M8 5 L19 12 L8 19 Z"/><path class="i-pause" d="M7 5 H10 V19 H7 Z M14 5 H17 V19 H14 Z"/></svg>
+          </button>
+          <div class="scp-main">
+            <div class="scp-info"><span class="scp-artist">Loading…</span><span class="scp-time">0:00 / –:––</span></div>
+            <div class="scp-wave" role="slider" tabindex="0" aria-label="Position in the set" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><canvas></canvas></div>
+          </div>
+        </div>`;
     }
     if (host === "mixcloud.com") {
       const src = "https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&light=0&feed=" + encodeURIComponent(u.pathname);
@@ -147,18 +151,4 @@
   $("tracks-list").innerHTML = tracks.length
     ? tracks.map((t) => cardHtml(t, t.label)).join("")
     : `<p class="empty">Releases coming soon.</p>`;
-
-  // Ask SoundCloud for the full address (and title) behind short share links.
-  document.querySelectorAll("iframe[data-sc-short]").forEach((frame) => {
-    fetch("https://soundcloud.com/oembed?format=json&url=" + encodeURIComponent(frame.dataset.scShort))
-      .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
-      .then((info) => {
-        const src = (info.html || "").match(/src="([^"]+)"/);
-        const full = src && new URL(src[1].replace(/&amp;/g, "&")).searchParams.get("url");
-        if (full) frame.src = scPlayer(full);
-        const title = frame.closest(".card").querySelector("h3[data-auto-title]");
-        if (title && info.title) title.textContent = info.title;
-      })
-      .catch(() => {}); // keep the player built from the short link
-  });
 })();

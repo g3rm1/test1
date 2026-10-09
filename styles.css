@@ -179,6 +179,94 @@ a:focus-visible, summary:focus-visible { outline: 1px solid var(--accent); outli
 .card audio { width: 100%; margin-top: 8px; }
 .card .btn { align-self: flex-start; margin-top: 8px; }
 
+/* ---- Custom SoundCloud player ---- */
+.scp { display: flex; align-items: center; gap: 20px; margin-top: 8px; position: relative; }
+.scp-play, .pbar-play {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.scp-play:hover:not(:disabled), .is-playing .scp-play, .pbar-play:hover, .pbar.is-playing .pbar-play { background: var(--accent); color: var(--bg); }
+.scp-play:disabled { opacity: 0.4; cursor: wait; }
+.scp-play:focus-visible, .pbar-play:focus-visible, .pbar-close:focus-visible, .scp-wave:focus-visible, .pbar-track:focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
+.scp-play svg, .pbar-play svg { width: 22px; height: 22px; fill: currentColor; }
+.i-pause { display: none; }
+.is-playing .i-play { display: none; }
+.is-playing .i-pause { display: inline; }
+.scp-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.scp-info { display: flex; justify-content: space-between; gap: 16px; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+.scp-time { font-variant-numeric: tabular-nums; }
+.scp-info a { color: var(--accent); }
+.scp-wave { height: 56px; cursor: pointer; }
+.scp-wave canvas { display: block; width: 100%; height: 100%; --wave-played: #d85133; --wave-rest: #5e5e5e; }
+/* the real SoundCloud player: present for playback, invisible */
+.scp-frame { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; border: 0; left: 0; top: 0; }
+
+/* ---- Fixed player bar (appears once a set is playing) ---- */
+.pbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: 72px;
+  padding: 0 48px;
+  background: #2a2a2a;
+  border-top: 1px solid var(--accent);
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.pbar.is-open { transform: none; }
+body.has-pbar { padding-bottom: 72px; }
+.pbar-play { width: 44px; height: 44px; }
+.pbar-play svg { width: 18px; height: 18px; }
+.pbar-info { width: 280px; min-width: 0; display: flex; flex-direction: column; line-height: 1.3; }
+.pbar-title { font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pbar-artist { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+.pbar-time { font-size: 0.75rem; color: var(--muted); font-variant-numeric: tabular-nums; width: 56px; }
+.pbar-pos { text-align: right; }
+/* progress: a thin line with the brand dot as the handle */
+.pbar-track { position: relative; flex: 1; height: 24px; cursor: pointer; }
+.pbar-track::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--border); }
+.pbar-fill { position: absolute; left: 0; top: 50%; height: 1px; width: 0; background: var(--accent); }
+.pbar-dot { position: absolute; top: 50%; left: 0; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: var(--accent); }
+.pbar-close { flex: none; width: 32px; height: 32px; padding: 6px; border: 0; background: none; color: var(--muted); cursor: pointer; }
+.pbar-close:hover { color: var(--accent); }
+.pbar-close svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2; }
+
+/* ---- The germ1 bot: stands on the player bar and dances while the set plays ---- */
+.bot { position: absolute; right: 64px; bottom: 100%; width: 64px; height: 64px; margin-bottom: -8px; }
+.bot svg { width: 100%; height: 100%; overflow: visible; }
+.bot .skin, .bot .arm-l, .bot .arm-r, .bot .leg-l, .bot .leg-r { fill: var(--accent); }
+.bot .eye { fill: #1e1e1e; transform-box: fill-box; transform-origin: center; }
+.bot .phones { fill: var(--brand-light); }
+.pbar.is-playing .bot svg { animation: bot-sway calc(var(--beat) * 2) steps(1) infinite; transform-origin: 50% 100%; }
+.pbar.is-playing .bot-body { animation: bot-bounce var(--beat) steps(1) infinite; }
+.pbar.is-playing .arm-l { animation: bot-arm-l var(--beat) steps(1) infinite; }
+.pbar.is-playing .arm-r { animation: bot-arm-r var(--beat) steps(1) infinite; }
+.pbar.is-playing .leg-l { animation: bot-leg var(--beat) steps(1) infinite; }
+.pbar.is-playing .leg-r { animation: bot-leg var(--beat) steps(1) infinite reverse; }
+@keyframes bot-bounce { 0% { transform: translateY(-1px); } 50% { transform: none; } }
+@keyframes bot-arm-l { 0% { transform: translate(-1px, -2px); } 50% { transform: none; } }
+@keyframes bot-arm-r { 0% { transform: none; } 50% { transform: translate(1px, -2px); } }
+@keyframes bot-leg { 0% { transform: translateY(-1px); } 50% { transform: none; } }
+@keyframes bot-sway { 0% { transform: rotate(-6deg); } 50% { transform: rotate(6deg); } }
+/* paused: the bot waits, blinking now and then */
+.pbar:not(.is-playing) .eye { animation: bot-blink 4s steps(1) infinite; }
+@keyframes bot-blink { 0%, 94% { transform: none; } 95%, 100% { transform: translateY(1px) scaleY(0.5); } }
+
 /* About */
 .about-grid { display: grid; grid-template-columns: 320px 1fr; gap: 64px; align-items: start; }
 .about-grid img { width: 100%; filter: grayscale(100%); }
@@ -230,7 +318,7 @@ a:focus-visible, summary:focus-visible { outline: 1px solid var(--accent); outli
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero *, .hero svg :is(path, circle) { animation: none !important; }
+  .hero *, .hero svg :is(path, circle), .bot * { animation: none !important; }
   html { scroll-behavior: auto; }
   * { transition: none !important; }
 }

@@ -68,28 +68,8 @@ window.SITE = {
       description: "",
       url: "https://on.soundcloud.com/occgcQX6qPFHogPoMt",
     },
-    {
-      title: "Studio Mix #01",
-      date: "2026-07-02",
-      description: "",
-      url: "https://www.mixcloud.com/spartacus/party-time/",
-    },
   ],
 
-  tracks: [
-    {
-      title: "My First Track",
-      date: "2026-08-01",
-      label: "Self-released", // label name or ""
-      description: "Original mix.",
-      url: "https://soundcloud.com/forss/flickermood",
-    },
-    {
-      title: "Another Track (Extended Mix)",
-      date: "2026-03-15",
-      label: "",
-      description: "",
-      url: "https://bandcamp.com",
-    },
-  ],
+  // Add your productions here, same format as sets, plus an optional "label".
+  tracks: [],
 };
