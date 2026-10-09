@@ -27,7 +27,7 @@ window.SITE = {
     // Remove any line you don't use.
     socials: {
       Instagram: "https://instagram.com/yourname",
-      SoundCloud: "https://soundcloud.com/yourname",
+      SoundCloud: "https://soundcloud.com/g_erm1",
       Spotify: "",
       Bandcamp: "",
       YouTube: "",
