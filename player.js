@@ -78,15 +78,26 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
     const styles = getComputedStyle(canvas);
-    const played = styles.getPropertyValue("--wave-played").trim() || "#d85133";
-    const rest = styles.getPropertyValue("--wave-rest").trim() || "#5e5e5e";
-    const step = 3; // 2px bar + 1px gap
-    const bars = Math.floor(w / step);
-    for (let i = 0; i < bars; i++) {
-      const p = peaks[Math.floor((i / bars) * peaks.length)] || 0.1;
-      const bh = Math.max(2, p * h);
-      ctx.fillStyle = i / bars < rel ? played : rest;
-      ctx.fillRect(i * step, (h - bh) / 2, 2, bh);
+    const played = styles.getPropertyValue("--wave-played").trim() || "#ff5a1f";
+    const rest = styles.getPropertyValue("--wave-rest").trim() || "#a9a9a9";
+    // "Micro dot" style: each column is a stack of tiny dots, mirrored around the middle.
+    const step = 4; // distance between dots, horizontally and vertically
+    const r = 1.1; // dot radius
+    const cols = Math.floor(w / step);
+    const half = Math.floor((h / 2 - r) / step); // dots above (and below) the middle line
+    const mid = h / 2;
+    for (let i = 0; i < cols; i++) {
+      const p = peaks[Math.floor((i / cols) * peaks.length)] || 0.1;
+      const n = Math.max(0, Math.round(p * half));
+      const x = i * step + step / 2;
+      ctx.fillStyle = i / cols < rel ? played : rest;
+      ctx.beginPath();
+      for (let k = -n; k <= n; k++) {
+        const y = mid + k * step;
+        ctx.moveTo(x + r, y);
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+      }
+      ctx.fill();
     }
   };
 
