@@ -84,7 +84,7 @@ window.SITE = {
       bookingEmail: "",
       socials: {
         Instagram: "",
-        SoundCloud: "",
+        SoundCloud: "https://soundcloud.com/d_gruv",
       },
     },
     // Example dates (made up): replace them with real ones
