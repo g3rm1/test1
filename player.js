@@ -90,11 +90,9 @@
     }
   };
 
-  // ---- Fixed player bar + the germ1 bot ----
-  document.body.insertAdjacentHTML(
-    "beforeend",
-    `<div class="pbar" id="pbar" hidden>
-      <div class="bot" aria-hidden="true">
+  // ---- The germ1 bot: always in the bottom-right corner, dances while a set plays ----
+  document.body.insertAdjacentHTML("beforeend", `
+      <div class="bot" id="bot" aria-hidden="true">
         <svg viewBox="0 0 16 16" shape-rendering="crispEdges">
           <g class="bot-legs">
             <rect class="leg-l" x="5" y="11" width="1" height="3"/>
@@ -114,6 +112,13 @@
           </g>
         </svg>
       </div>
+`);
+  const bot = document.getElementById("bot");
+
+  // ---- Fixed player bar ----
+  document.body.insertAdjacentHTML(
+    "beforeend",
+    `<div class="pbar" id="pbar" hidden>
       <button class="pbar-play" type="button" aria-label="Play">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-play" d="M8 5 L19 12 L8 19 Z"/><path class="i-pause" d="M7 5 H10 V19 H7 Z M14 5 H17 V19 H14 Z"/></svg>
       </button>
@@ -154,21 +159,23 @@
   q(".pbar-close").addEventListener("click", () => {
     if (active) active.widget.pause();
     bar.classList.remove("is-open");
+    bot.classList.remove("on-bar", "is-intro"); // the bot rides back down with the bar
     document.body.classList.remove("has-pbar");
     setTimeout(() => { if (!bar.classList.contains("is-open")) bar.hidden = true; }, 400);
   });
   q(".pbar-track").addEventListener("click", (e) => seekFromEvent(active, e.currentTarget, e));
   q(".pbar-track").addEventListener("keydown", (e) => seekByKey(active, e));
 
-  const INTRO_MS = 3100; // bar slides up, then the bot's entrance (see .bot-intro in styles.css)
+  const INTRO_MS = 3000; // the bot's entrance (see .bot.is-intro in styles.css)
   let introTimer = null;
   const openBar = () => {
     if (bar.classList.contains("is-open")) return;
     bar.hidden = false;
-    // The bot gets launched into the air, lands face down, gets up, then dances.
-    bar.classList.add("bot-intro");
+    // The rising bar launches the bot into the air; it lands face down on the bar,
+    // gets up, then dances.
+    bot.classList.add("on-bar", "is-intro");
     clearTimeout(introTimer);
-    introTimer = setTimeout(() => bar.classList.remove("bot-intro"), INTRO_MS);
+    introTimer = setTimeout(() => bot.classList.remove("is-intro"), INTRO_MS);
     requestAnimationFrame(() => bar.classList.add("is-open"));
     document.body.classList.add("has-pbar");
   };
@@ -195,6 +202,7 @@
         drawWave(wave.querySelector("canvas"), this.peaks, rel);
         if (active === this) {
           bar.classList.toggle("is-playing", this.playing);
+          bot.classList.toggle("is-playing", this.playing);
           q(".pbar-play").setAttribute("aria-label", label);
           q(".pbar-title").textContent = this.title;
           q(".pbar-artist").textContent = this.artist;
