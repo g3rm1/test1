@@ -52,13 +52,13 @@
           <!-- same drawing as the "wordmark" symbol, inline so each stroke can animate -->
           <svg viewBox="0 0 200 80" fill="none" stroke-width="4" aria-hidden="true">
             <g stroke="#adadad">
-              <circle pathLength="1" style="--i:0" cx="22" cy="40" r="18" transform="rotate(-90 22 40)"/>
-              <path pathLength="1" style="--i:1" d="M40 22 V74 H8"/>
-              <path pathLength="1" style="--i:2" d="M52 40 H88 A18 18 0 1 0 83.8 51.6"/>
-              <path pathLength="1" style="--i:3" d="M100 60 V22 M100 38 A17 17 0 0 1 117 21"/>
-              <path pathLength="1" style="--i:4" d="M128 60 V22 M128 34 A12 12 0 0 1 152 34 V60 M152 34 A12 12 0 0 1 176 34 V60"/>
+              <circle style="--i:0" cx="22" cy="40" r="18" transform="rotate(-90 22 40)"/>
+              <path style="--i:1" d="M40 22 V74 H8"/>
+              <path style="--i:2" d="M52 40 H88 A18 18 0 1 0 83.8 51.6"/>
+              <path style="--i:3" d="M100 60 V22 M100 38 A17 17 0 0 1 117 21"/>
+              <path style="--i:4" d="M128 60 V22 M128 34 A12 12 0 0 1 152 34 V60 M152 34 A12 12 0 0 1 176 34 V60"/>
             </g>
-            <path pathLength="1" style="--i:5" stroke="#d85133" d="M196 60 V4 M196 4 L183 22"/>
+            <path style="--i:5" stroke="#d85133" d="M196 60 V4 M196 4 L183 22"/>
           </svg>
         </h1>
         <span class="brand-line" aria-hidden="true"></span>
@@ -70,6 +70,16 @@
           <circle class="dot" cx="60" cy="90" r="6" fill="#d85133"/>
         </svg>
       </div>
+      <script>
+        // Opening animation: measure each logo stroke so it can draw itself in (styles.css, ".intro").
+        (function () {
+          if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+          document.querySelectorAll(".wordmark svg path, .wordmark svg circle").forEach(function (el) {
+            el.style.setProperty("--len", Math.ceil(el.getTotalLength()) + 1);
+          });
+          document.documentElement.classList.add("intro");
+        })();
+      </script>
       <p class="tagline" id="artist-tagline"></p>
       <a class="btn" href="#gigs">Next gigs</a>
     </section>
