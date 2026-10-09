@@ -81,8 +81,8 @@
     const played = styles.getPropertyValue("--wave-played").trim() || "#ff5a1f";
     const rest = styles.getPropertyValue("--wave-rest").trim() || "#a9a9a9";
     // "Micro dot" style: each column is a stack of tiny dots, mirrored around the middle.
-    const step = 4; // distance between dots, horizontally and vertically
-    const r = 1.1; // dot radius
+    const step = 3; // distance between dots, horizontally and vertically
+    const r = 0.85; // dot radius
     const cols = Math.floor(w / step);
     const half = Math.floor((h / 2 - r) / step); // dots above (and below) the middle line
     const mid = h / 2;
