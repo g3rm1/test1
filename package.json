@@ -1,0 +1,9 @@
+{
+  "name": "dj-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "DJ website: gigs, DJ sets and productions",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

@@ -31,7 +31,18 @@ Photo: put it in `images/` and set `artist.photo: "images/me.jpg"`.
 
 ## Preview locally
 
-Double-click `index.html`, or run `python3 -m http.server` and open http://localhost:8000.
+1. Install [Node.js](https://nodejs.org) (the "LTS" version) if you don't have it.
+2. Get the code: on GitHub click **Code → Download ZIP** and unzip it, or `git clone` the repository.
+3. Open a terminal in the website folder and run:
+
+   ```sh
+   npm start
+   ```
+
+4. Open **http://localhost:8000** in your browser.
+
+Edit `content.js` and refresh the page to see your changes. Press `Ctrl+C` in the terminal to stop.
+If port 8000 is busy, use another one: `PORT=8080 npm start`.
 
 ## Put it online (free, with GitHub Pages)
 
