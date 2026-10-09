@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DJ</title>
+  <meta name="description" content="Gigs, DJ sets and productions.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="nav">
+    <a href="#top" class="nav-name" id="nav-name"></a>
+    <nav>
+      <a href="#gigs">Gigs</a>
+      <a href="#sets">Sets</a>
+      <a href="#tracks">Tracks</a>
+      <a href="#about">About</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <h1 id="artist-name"></h1>
+      <p class="tagline" id="artist-tagline"></p>
+      <a class="btn" href="#gigs">Next gigs</a>
+    </section>
+
+    <section id="gigs" class="section">
+      <h2>Upcoming gigs</h2>
+      <ul class="gig-list" id="upcoming-gigs"></ul>
+      <details class="past" id="past-wrap">
+        <summary>Past gigs</summary>
+        <ul class="gig-list" id="past-gigs"></ul>
+      </details>
+    </section>
+
+    <section id="sets" class="section">
+      <h2>DJ sets</h2>
+      <div class="cards" id="sets-list"></div>
+    </section>
+
+    <section id="tracks" class="section">
+      <h2>Productions</h2>
+      <div class="cards" id="tracks-list"></div>
+    </section>
+
+    <section id="about" class="section about">
+      <h2>About</h2>
+      <div class="about-grid">
+        <img id="artist-photo" alt="" hidden>
+        <div>
+          <p id="artist-bio"></p>
+          <p><a class="btn" id="booking-link">Booking</a></p>
+          <ul class="socials" id="socials"></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span id="footer-text"></span>
+  </footer>
+
+  <script src="content.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

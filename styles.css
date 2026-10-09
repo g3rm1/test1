@@ -1,0 +1,147 @@
+:root {
+  --bg: #0b0b0f;
+  --surface: #15151c;
+  --border: #26262f;
+  --text: #f2f2f5;
+  --muted: #9a9aa8;
+  --accent: #c6ff3d;
+  --radius: 12px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+a { color: inherit; }
+
+/* Nav */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 24px;
+  background: rgba(11, 11, 15, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-name { font-weight: 700; text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; }
+.nav nav { display: flex; gap: 20px; }
+.nav nav a { text-decoration: none; color: var(--muted); font-size: 0.95rem; }
+.nav nav a:hover { color: var(--accent); }
+
+/* Hero */
+.hero {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 64px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.hero h1 {
+  margin: 0;
+  font-size: clamp(3rem, 12vw, 8rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+.tagline { color: var(--muted); font-size: 1.25rem; margin: 16px 0 32px; }
+
+.btn {
+  display: inline-block;
+  padding: 10px 22px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #000;
+  font-weight: 700;
+  text-decoration: none;
+}
+.btn:hover { filter: brightness(1.1); }
+.btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); font-weight: 500; }
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Sections */
+.section { max-width: 1100px; margin: 0 auto; padding: 64px 24px; }
+.section h2 {
+  margin: 0 0 24px;
+  font-size: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.empty { color: var(--muted); }
+
+/* Gigs */
+.gig-list { list-style: none; margin: 0; padding: 0; }
+.gig {
+  display: grid;
+  grid-template-columns: 90px 1fr auto;
+  gap: 20px;
+  align-items: center;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+}
+.gig-date { text-align: center; line-height: 1.1; }
+.gig-date .day { display: block; font-size: 2rem; font-weight: 700; }
+.gig-date .month { display: block; color: var(--accent); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.1em; }
+.gig-date .year { display: block; color: var(--muted); font-size: 0.8rem; }
+.gig-info h3 { margin: 0; font-size: 1.15rem; }
+.gig-info p { margin: 2px 0 0; color: var(--muted); }
+
+.past { margin-top: 32px; }
+.past summary { cursor: pointer; color: var(--muted); }
+.past summary:hover { color: var(--text); }
+.past .gig { opacity: 0.6; }
+
+/* Cards (sets & tracks) */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.card h3 { margin: 0; font-size: 1.15rem; }
+.card .meta { color: var(--muted); font-size: 0.9rem; margin: 0; }
+.card .desc { margin: 0; }
+.card iframe { width: 100%; border: 0; border-radius: 8px; }
+.card audio { width: 100%; }
+.card .btn { align-self: flex-start; }
+
+/* About */
+.about-grid { display: grid; grid-template-columns: 280px 1fr; gap: 32px; align-items: start; }
+.about-grid img { width: 100%; border-radius: var(--radius); }
+.about-grid img[hidden] { display: none; }
+.about-grid:has(img[hidden]) { grid-template-columns: 1fr; }
+#artist-bio { font-size: 1.1rem; max-width: 65ch; margin-top: 0; }
+.socials { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+
+.footer { text-align: center; padding: 40px 24px; color: var(--muted); border-top: 1px solid var(--border); font-size: 0.9rem; }
+
+/* Mobile */
+@media (max-width: 640px) {
+  .nav { padding: 12px 16px; }
+  .nav nav { gap: 14px; }
+  .nav-name { display: none; }
+  .hero, .section { padding-left: 16px; padding-right: 16px; }
+  .gig { grid-template-columns: 64px 1fr; }
+  .gig .btn { grid-column: 2; justify-self: start; }
+  .cards { grid-template-columns: 1fr; }
+  .about-grid { grid-template-columns: 1fr; }
+}
