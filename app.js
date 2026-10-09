@@ -20,7 +20,11 @@
   document.title = a.name;
   // The name in the header and hero is the germ1 logo (see index.html).
   $("nav-name").setAttribute("aria-label", a.name);
-  $("artist-tagline").textContent = a.tagline;
+  // Tagline under the logo: only shown when one is set in content.js
+  if (a.tagline) {
+    $("artist-tagline").textContent = a.tagline;
+    $("artist-tagline").hidden = false;
+  }
   $("artist-bio").textContent = a.bio;
   $("footer-text").textContent = `© ${new Date().getFullYear()} ${a.name}`;
 

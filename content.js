@@ -18,7 +18,7 @@
 window.SITE = {
   artist: {
     name: "germ1",
-    tagline: "feeling groovy",
+    tagline: "", // optional line under the logo, e.g. "feeling groovy"
     bio: "Paris based ",
     // Optional photo: put the file in the "images/" folder, e.g. "images/me.jpg". Leave "" for none.
     photo: "",

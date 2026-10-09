@@ -63,7 +63,7 @@ a:focus-visible, summary:focus-visible { outline: 1px solid var(--accent); outli
   padding: 120px max(48px, calc((100% - 1100px) / 2 + 48px)) 110px;
   overflow: hidden;
 }
-.brand { position: relative; display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
+.brand { position: relative; display: flex; align-items: center; justify-content: space-between; }
 .wordmark { margin: 0; line-height: 0; flex: none; position: relative; z-index: 1; }
 .wordmark svg { height: 150px; width: 375px; overflow: visible; }
 /* thin line from the wordmark through the symbol's dot to the edge of the page */
@@ -78,7 +78,7 @@ a:focus-visible, summary:focus-visible { outline: 1px solid var(--accent); outli
   transform-origin: left;
 }
 .brand-mark { flex: none; height: 240px; width: 160px; overflow: visible; position: relative; }
-.hero .tagline { color: var(--muted); margin: 0 0 40px; }
+.hero .tagline { color: var(--muted); margin: 40px 0 0; }
 .tagline { font-size: 1rem; letter-spacing: 0.25em; text-transform: uppercase; }
 
 /* Buttons: thin outlines, orange on hover */
