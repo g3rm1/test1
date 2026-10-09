@@ -117,7 +117,7 @@ a:focus-visible, summary:focus-visible { outline: 1px solid var(--accent); outli
   text-transform: uppercase;
 }
 /* orange pixel square before each section title */
-.section h2::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 14px; background: var(--accent); vertical-align: middle; }
+.section h2::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 14px; background: var(--accent); vertical-align: 1px; } /* centred on the capital letters */
 .empty { color: var(--muted); }
 
 /* Gigs */
