@@ -160,8 +160,15 @@
   q(".pbar-track").addEventListener("click", (e) => seekFromEvent(active, e.currentTarget, e));
   q(".pbar-track").addEventListener("keydown", (e) => seekByKey(active, e));
 
+  const INTRO_MS = 3100; // bar slides up, then the bot's entrance (see .bot-intro in styles.css)
+  let introTimer = null;
   const openBar = () => {
+    if (bar.classList.contains("is-open")) return;
     bar.hidden = false;
+    // The bot gets launched into the air, lands face down, gets up, then dances.
+    bar.classList.add("bot-intro");
+    clearTimeout(introTimer);
+    introTimer = setTimeout(() => bar.classList.remove("bot-intro"), INTRO_MS);
     requestAnimationFrame(() => bar.classList.add("is-open"));
     document.body.classList.add("has-pbar");
   };
