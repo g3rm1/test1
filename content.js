@@ -18,8 +18,8 @@
 window.SITE = {
   artist: {
     name: "germ1",
-    tagline: "House · Techno · Disco",
-    bio: "Write a few lines about yourself here: where you're based, the sound you play, the clubs and crews you work with.",
+    tagline: "feeling groovy",
+    bio: "Paris based ",
     // Optional photo: put the file in the "images/" folder, e.g. "images/me.jpg". Leave "" for none.
     photo: "",
     bookingEmail: "booking@example.com",
@@ -27,7 +27,6 @@ window.SITE = {
     socials: {
       Instagram: "https://instagram.com/yourname",
       SoundCloud: "https://soundcloud.com/yourname",
-      Mixcloud: "https://www.mixcloud.com/yourname/",
       Spotify: "",
       Bandcamp: "",
       YouTube: "",
@@ -36,11 +35,11 @@ window.SITE = {
 
   gigs: [
     {
-      date: "2026-11-21",
+      date: "2026-10-09",
       time: "23:00",
-      venue: "Club Name",
-      city: "Paris",
-      event: "Event / party name",
+      venue: "Mish Mish",
+      city: "Paris 11",
+      event: "Opening",
       tickets: "https://example.com/tickets", // "" if no ticket link
     },
     {
