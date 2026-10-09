@@ -289,37 +289,36 @@ body.has-pbar { padding-bottom: 72px; }
 .bot:not(.is-playing):not(.is-intro) .eye { animation: bot-blink 4s steps(1) infinite; }
 @keyframes bot-blink { 0%, 94% { transform: none; } 95%, 100% { transform: translateY(1px) scaleY(0.5); } }
 
-/* Entrance when the bar appears (3s). The bot starts on the ground (72px below the bar top),
-   the rising bar launches it into the air spinning, it crashes face down on the bar
-   (we only see its back), lies there, wriggles, hops back up, then dances. */
-.bot.is-intro { animation: bot-fly 3s both; }
-.bot.is-intro svg { animation: bot-spin 3s both; transform-origin: 50% 50%; }
-.bot.is-intro .eye { animation: bot-face-down 3s both; }
-@keyframes bot-fly {
-  0%, 12% { transform: translateY(72px); animation-timing-function: cubic-bezier(0.2, 0.7, 0.4, 1); }
-  32% { transform: translateY(-150px); animation-timing-function: cubic-bezier(0.6, 0, 0.9, 0.5); }
+/* Entrance when the bar appears (2.6s). The bot starts on the ground, in front of the rising bar:
+   it turns around (we see its back), jumps onto the player, turns back to face us,
+   gives a little hop, then dances. Turning = squeezing it flat sideways and back. */
+.bot.is-intro { animation: bot-hop-on 2.6s both; }
+.bot.is-intro svg { animation: bot-turn 2.6s both; transform-origin: 50% 87.5%; }
+.bot.is-intro .eye { animation: bot-eyes 2.6s both; }
+@keyframes bot-hop-on {
+  0%, 23% { transform: translateY(72px); animation-timing-function: cubic-bezier(0.2, 0.7, 0.4, 1); }
+  37% { transform: translateY(-64px); animation-timing-function: cubic-bezier(0.6, 0, 0.9, 0.5); }
   50% { transform: translateY(0); }
-  53% { transform: translateY(-8px); }
-  56%, 78% { transform: translateY(0); animation-timing-function: ease-out; }
-  86% { transform: translateY(-24px); animation-timing-function: ease-in; }
-  92%, 100% { transform: translateY(0); }
+  84% { transform: translateY(0); animation-timing-function: ease-out; }
+  90% { transform: translateY(-12px); animation-timing-function: ease-in; }
+  95%, 100% { transform: translateY(0); }
 }
-@keyframes bot-spin {
+@keyframes bot-turn {
   0% { transform: none; }
-  10% { transform: scale(1.15, 0.75); }         /* crouch while the bar rises */
-  15% { transform: scale(0.9, 1.15); }          /* launched */
-  50% { transform: rotate(450deg); }            /* lands lying flat, face down */
-  53% { transform: rotate(450deg) scale(0.85, 1.12); }
-  56%, 66% { transform: rotate(450deg); }
-  69% { transform: rotate(456deg); }            /* a little wriggle */
-  72% { transform: rotate(444deg); }
-  75%, 78% { transform: rotate(450deg); }
-  88% { transform: rotate(360deg); }            /* back on its feet */
-  92% { transform: rotate(360deg) scale(1.12, 0.88); }
-  100% { transform: rotate(360deg); }
+  7.5% { transform: scaleX(0.05); }         /* side-on, halfway through turning around */
+  15% { transform: none; }                   /* back view */
+  19% { transform: scale(1.12, 0.8); }       /* crouch */
+  24% { transform: scale(0.9, 1.12); }       /* jump */
+  32%, 50% { transform: none; }
+  53% { transform: scale(1.14, 0.84); }      /* lands on the player */
+  58% { transform: none; }
+  67.5% { transform: scaleX(0.05); }        /* turning back */
+  75%, 84% { transform: none; }              /* facing us */
+  95% { transform: scale(1.1, 0.9); }
+  100% { transform: none; }
 }
-/* eyes hidden while the face is pressed against the bar */
-@keyframes bot-face-down { 0%, 49% { opacity: 1; } 50%, 82% { opacity: 0; } 83%, 100% { opacity: 1; } }
+/* eyes only show when it faces us */
+@keyframes bot-eyes { 0%, 7.4% { opacity: 1; } 7.5%, 67.4% { opacity: 0; } 67.5%, 100% { opacity: 1; } }
 
 /* About */
 .about-grid { display: grid; grid-template-columns: 320px 1fr; gap: 64px; align-items: start; }

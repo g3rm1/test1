@@ -177,13 +177,12 @@
   q(".pbar-track").addEventListener("click", (e) => seekFromEvent(active, e.currentTarget, e));
   q(".pbar-track").addEventListener("keydown", (e) => seekByKey(active, e));
 
-  const INTRO_MS = 3000; // the bot's entrance (see .bot.is-intro in styles.css)
+  const INTRO_MS = 2600; // the bot's entrance (see .bot.is-intro in styles.css)
   let introTimer = null;
   const openBar = () => {
     if (bar.classList.contains("is-open")) return;
     bar.hidden = false;
-    // The rising bar launches the bot into the air; it lands face down on the bar,
-    // gets up, then dances.
+    // The bot turns around, jumps onto the player, turns back to face us, then dances.
     bot.classList.add("on-bar", "is-intro");
     clearTimeout(introTimer);
     introTimer = setTimeout(() => bot.classList.remove("is-intro"), INTRO_MS);
