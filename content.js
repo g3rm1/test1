@@ -66,7 +66,7 @@ window.SITE = {
       title: "", // left empty: the title is taken from SoundCloud
       date: "",
       description: "",
-      url: "https://on.soundcloud.com/occgcQX6qPFHogPoMt",
+      url: "https://soundcloud.com/g_erm1/rec01",
     },
   ],
 
