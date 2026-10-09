@@ -35,9 +35,12 @@ Double-click `index.html`, or run `python3 -m http.server` and open http://local
 
 ## Put it online (free, with GitHub Pages)
 
-1. Merge this into your repository's default branch.
-2. On GitHub: **Settings → Pages → Build and deployment → Source: "Deploy from a branch"**, pick your branch and `/ (root)`, then Save.
-3. After a minute the site is live at `https://<your-username>.github.io/<repo-name>/`.
+The workflow in `.github/workflows/deploy.yml` publishes the site every time you commit.
 
-Every change you commit to `content.js` goes live automatically.
+1. GitHub Pages is free for **public** repositories. A private repository needs a paid plan (GitHub Pro).
+   To make it public: **Settings → General → Danger Zone → Change visibility**.
+2. **Settings → Pages → Build and deployment → Source: "GitHub Actions"**.
+3. Open the **Actions** tab, pick "Deploy website" and click **Run workflow** (or just commit any change).
+4. When it turns green, the site is live at `https://<your-username>.github.io/<repo-name>/`.
+
 You can add your own domain (e.g. `djname.com`) under Settings → Pages → Custom domain.
