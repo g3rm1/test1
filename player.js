@@ -79,7 +79,7 @@
     ctx.clearRect(0, 0, w, h);
     const styles = getComputedStyle(canvas);
     const played = styles.getPropertyValue("--wave-played").trim() || "#ff5a1f";
-    const rest = styles.getPropertyValue("--wave-rest").trim() || "#a9a9a9";
+    const rest = styles.getPropertyValue("--wave-rest").trim() || "#9a9a9a";
     // "Micro dot" style: each column is a stack of tiny dots, mirrored around the middle.
     const step = 4; // distance between dots, horizontally and vertically
     const r = 1.1; // dot radius
