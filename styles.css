@@ -116,8 +116,8 @@ a:focus-visible, summary:focus-visible { outline: 1px solid var(--accent); outli
   letter-spacing: 0.3em;
   text-transform: uppercase;
 }
-/* the brand dot */
-.section h2::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 14px; border-radius: 50%; background: var(--accent); vertical-align: middle; }
+/* orange pixel square before each section title */
+.section h2::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 14px; background: var(--accent); vertical-align: middle; }
 .empty { color: var(--muted); }
 
 /* Gigs */
