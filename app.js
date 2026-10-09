@@ -61,10 +61,8 @@
           <span class="month">${escape(d.toLocaleDateString(undefined, { month: "short" }))}</span>
           <span class="year">${d.getFullYear()}</span>
         </div>
-        <div class="gig-info">
-          <h3>${escape(g.event || g.venue)}</h3>
-          <p>${escape(where)}${g.time ? " — " + escape(g.time) : ""}</p>
-        </div>
+        <div class="gig-info"><h3>${escape(g.event || g.venue)}</h3></div>
+        <p class="gig-where">${escape(where)}${g.time ? " — " + escape(g.time) : ""}</p>
         ${tickets}
       </li>`;
   };
@@ -96,7 +94,7 @@
     }
     if (host.endsWith("soundcloud.com") && !host.startsWith("w.")) {
       const src = "https://w.soundcloud.com/player/?url=" + encodeURIComponent(url) +
-        "&color=%23c6ff3d&auto_play=false&hide_related=true&show_comments=false&visual=false";
+        "&color=%23ff6a13&auto_play=false&hide_related=true&show_comments=false&visual=false";
       return `<iframe height="166" allow="autoplay" loading="lazy" src="${escape(src)}"></iframe>`;
     }
     if (host === "mixcloud.com") {
