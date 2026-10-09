@@ -26,6 +26,8 @@ Example: adding a gig:
 },
 ```
 
+**The alias page** (`alias.html`, opened by clicking the dot of the symbol) has its own name, bio, gigs, sets and tracks in the `alias` part at the end of `content.js`, in the same format.
+
 Hosting your own audio files: put `.mp3` files in an `audio/` folder and use `url: "audio/file.mp3"`.
 Photo: put it in `images/` and set `artist.photo: "images/me.jpg"`.
 

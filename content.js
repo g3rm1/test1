@@ -71,4 +71,22 @@ window.SITE = {
 
   // Add your productions here, same format as sets, plus an optional "label".
   tracks: [],
+
+  // ---- The alias page (alias.html, reached by clicking the dot of the symbol) ----
+  // Same format as above. Empty sections are hidden automatically.
+  alias: {
+    artist: {
+      name: "alias", // the alias's name
+      bio: "Coming soon.",
+      photo: "",
+      bookingEmail: "",
+      socials: {
+        Instagram: "",
+        SoundCloud: "",
+      },
+    },
+    gigs: [],
+    sets: [],
+    tracks: [],
+  },
 };

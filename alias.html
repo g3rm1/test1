@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-page="alias">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=900">
-  <title>germ1</title>
+  <title>alias</title>
   <meta name="description" content="Gigs, DJ sets and productions.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,7 +36,7 @@
   </svg>
 
   <header class="nav">
-    <a href="#top" class="nav-logo" id="nav-name"><svg viewBox="0 0 200 80" aria-hidden="true"><use href="#wordmark"/></svg></a>
+    <a href="#top" class="nav-logo nav-alias" id="nav-name" data-artist-name></a>
     <nav>
       <a href="#gigs">Gigs</a>
       <a href="#sets">Sets</a>
@@ -48,42 +48,20 @@
   <main id="top">
     <section class="hero">
       <div class="brand">
-        <h1 id="artist-name" class="wordmark" aria-label="germ1">
-          <!-- same drawing as the "wordmark" symbol, inline so each stroke can animate -->
-          <svg viewBox="0 0 200 80" fill="none" stroke-width="4" aria-hidden="true">
-            <g stroke="#2b2b2b">
-              <circle style="--i:0" cx="22" cy="40" r="18" transform="rotate(-90 22 40)"/>
-              <path style="--i:1" d="M40 22 V74 H8"/>
-              <path style="--i:2" d="M52 40 H88 A18 18 0 1 0 83.8 51.6"/>
-              <path style="--i:3" d="M100 60 V22 M100 38 A17 17 0 0 1 117 21"/>
-              <path style="--i:4" d="M128 60 V22 M128 34 A12 12 0 0 1 152 34 V60 M152 34 A12 12 0 0 1 176 34 V60"/>
-            </g>
-            <path style="--i:5" stroke="#ff5a1f" d="M196 60 V4 M196 4 L183 22"/>
-          </svg>
-        </h1>
+        <h1 id="artist-name" class="alias-name" data-artist-name></h1>
         <span class="brand-line" aria-hidden="true"></span>
         <svg class="brand-mark" viewBox="0 0 120 180">
           <g fill="none" stroke="#ff5a1f" stroke-width="5" aria-hidden="true">
             <path class="arrow-top" d="M60 0 V79 M28 47 L60 79 L92 47"/>
             <path class="arrow-bottom" d="M60 180 V101 M28 133 L60 101 L92 133"/>
           </g>
-          <!-- the dot is a door to the alias page (transition in motion.js) -->
-          <a class="portal" href="alias.html" aria-label="Go to the alias page">
+          <!-- the dot leads back to germ1 (transition in motion.js) -->
+          <a class="portal" href="index.html" aria-label="Back to germ1">
             <circle class="portal-hit" cx="60" cy="90" r="18" fill="transparent"/>
             <circle class="dot" cx="60" cy="90" r="6" fill="#ff5a1f"/>
           </a>
         </svg>
       </div>
-      <script>
-        // Opening animation: measure each logo stroke so it can draw itself in (styles.css, ".intro").
-        (function () {
-          if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-          document.querySelectorAll(".wordmark svg path, .wordmark svg circle").forEach(function (el) {
-            el.style.setProperty("--len", Math.ceil(el.getTotalLength()) + 1);
-          });
-          document.documentElement.classList.add("intro");
-        })();
-      </script>
       <p class="tagline" id="artist-tagline" hidden></p>
     </section>
 

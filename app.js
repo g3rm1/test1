@@ -1,7 +1,9 @@
 // Renders the content from content.js into the page.
 // You normally don't need to edit this file.
 (function () {
-  const site = window.SITE;
+  // index.html shows germ1; alias.html (<html data-page="alias">) shows the alias part of content.js
+  const isAlias = document.documentElement.dataset.page === "alias";
+  const site = (isAlias ? window.SITE.alias : window.SITE) || {};
   const $ = (id) => document.getElementById(id);
 
   const escape = (s) =>
@@ -16,12 +18,14 @@
     s ? parseDate(s).toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" }) : "";
 
   // ---- Artist ----
-  const a = site.artist;
-  document.title = a.name;
-  // The name in the header and hero is the germ1 logo (see index.html).
+  const a = site.artist || {};
+  document.title = a.name || "germ1";
+  // On index.html the name in the header and hero is the germ1 logo;
+  // on alias.html it's written out as text.
   $("nav-name").setAttribute("aria-label", a.name);
+  document.querySelectorAll("[data-artist-name]").forEach((el) => (el.textContent = a.name));
   // Tagline under the logo: only shown when one is set in content.js
-  if (a.tagline) {
+  if (a.tagline && $("artist-tagline")) {
     $("artist-tagline").textContent = a.tagline;
     $("artist-tagline").hidden = false;
   }
@@ -166,4 +170,5 @@
   if (!gigs.length) hideSection("gigs");
   if (!sets.length) hideSection("sets");
   if (!tracks.length) hideSection("tracks");
+  if (!a.bio && !a.bookingEmail && !a.photo && !Object.values(a.socials || {}).some(Boolean)) hideSection("about");
 })();
