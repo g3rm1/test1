@@ -13,20 +13,8 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Brand graphics: the germ1 wordmark and the arrows symbol -->
+  <!-- Brand graphic: the arrows symbol -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-    <symbol id="wordmark" viewBox="0 0 200 80">
-      <g fill="none" stroke-width="4">
-        <g stroke="#2b2b2b">
-          <circle cx="22" cy="40" r="18"/>
-          <path d="M40 22 V74 H8"/>
-          <path d="M52 40 H88 A18 18 0 1 0 83.8 51.6"/>
-          <path d="M100 60 V22 M100 38 A17 17 0 0 1 117 21"/>
-          <path d="M128 60 V22 M128 34 A12 12 0 0 1 152 34 V60 M152 34 A12 12 0 0 1 176 34 V60"/>
-        </g>
-        <path stroke="#ff5a1f" d="M196 60 V4 M196 4 L183 22"/>
-      </g>
-    </symbol>
     <symbol id="mark" viewBox="0 0 120 180">
       <g fill="none" stroke="#ff5a1f" stroke-width="5">
         <path d="M60 0 V79 M28 47 L60 79 L92 47"/>
@@ -37,7 +25,7 @@
   </svg>
 
   <header class="nav">
-    <a href="#top" class="nav-logo" id="nav-name"><svg viewBox="0 0 200 80" aria-hidden="true"><use href="#wordmark"/></svg></a>
+    <a href="#top" class="nav-logo" id="nav-name" data-artist-name></a>
     <nav>
       <a href="#gigs">Gigs</a>
       <a href="#sets">Sets</a>
@@ -49,19 +37,7 @@
   <main id="top">
     <section class="hero">
       <div class="brand">
-        <h1 id="artist-name" class="wordmark" aria-label="germ1">
-          <!-- same drawing as the "wordmark" symbol, inline so each stroke can animate -->
-          <svg viewBox="0 0 200 80" fill="none" stroke-width="4" aria-hidden="true">
-            <g stroke="#2b2b2b">
-              <circle style="--i:0" cx="22" cy="40" r="18" transform="rotate(-90 22 40)"/>
-              <path style="--i:1" d="M40 22 V74 H8"/>
-              <path style="--i:2" d="M52 40 H88 A18 18 0 1 0 83.8 51.6"/>
-              <path style="--i:3" d="M100 60 V22 M100 38 A17 17 0 0 1 117 21"/>
-              <path style="--i:4" d="M128 60 V22 M128 34 A12 12 0 0 1 152 34 V60 M152 34 A12 12 0 0 1 176 34 V60"/>
-            </g>
-            <path style="--i:5" stroke="#ff5a1f" d="M196 60 V4 M196 4 L183 22"/>
-          </svg>
-        </h1>
+        <h1 id="artist-name" class="hero-name" data-artist-name></h1>
         <span class="brand-line" aria-hidden="true"></span>
         <svg class="brand-mark" viewBox="0 0 120 180">
           <g fill="none" stroke="#ff5a1f" stroke-width="5" aria-hidden="true">
@@ -76,14 +52,8 @@
         </svg>
       </div>
       <script>
-        // Opening animation: measure each logo stroke so it can draw itself in (styles.css, ".intro").
-        (function () {
-          if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-          document.querySelectorAll(".wordmark svg path, .wordmark svg circle").forEach(function (el) {
-            el.style.setProperty("--len", Math.ceil(el.getTotalLength()) + 1);
-          });
-          document.documentElement.classList.add("intro");
-        })();
+        // Opening animation (styles.css, ".intro"), skipped for reduced motion
+        if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("intro");
       </script>
       <p class="tagline" id="artist-tagline" hidden></p>
     </section>

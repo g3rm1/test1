@@ -18,6 +18,7 @@
 window.SITE = {
   artist: {
     name: "germ1",
+    accent: "last", // letter of the name in orange: "first" or "last"
     tagline: "", // optional line under the logo, e.g. "feeling groovy"
     bio: "Paris based ",
     // Optional photo: put the file in the "images/" folder, e.g. "images/me.jpg". Leave "" for none.
@@ -77,6 +78,7 @@ window.SITE = {
   alias: {
     artist: {
       name: "D-Grüv", // the alias's name
+      accent: "first", // letter of the name in orange: "first" or "last"
       bio: "Coming soon.",
       photo: "",
       bookingEmail: "",

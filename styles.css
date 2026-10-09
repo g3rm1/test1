@@ -58,8 +58,8 @@ a:focus-visible, summary:focus-visible { outline: 1px solid var(--accent); outli
   background: var(--bg);
   border-bottom: 1px solid var(--border);
 }
-.nav-logo { display: block; line-height: 0; }
-.nav-logo svg { height: 19.5px; width: 48.75px; }
+/* the name in the menu: Space Grotesk Light, one letter in orange */
+.nav-logo { font-size: 1.25rem; font-weight: 300; line-height: 1; text-decoration: none; color: var(--text); }
 .nav nav { display: flex; gap: 30px; }
 .nav nav a {
   text-decoration: none;
@@ -71,7 +71,7 @@ a:focus-visible, summary:focus-visible { outline: 1px solid var(--accent); outli
 }
 .nav nav a:hover { color: var(--dark); }
 
-/* Hero: the logo plate. Wordmark, a thin line, and the arrows symbol. */
+/* Hero: the name, a thin line, and the arrows symbol. */
 .hero {
   background: var(--bg);
   /* full-width band; content stays aligned with the 825px sections */
@@ -79,21 +79,19 @@ a:focus-visible, summary:focus-visible { outline: 1px solid var(--accent); outli
   overflow: hidden;
 }
 .brand { position: relative; display: flex; align-items: center; justify-content: space-between; }
-.wordmark { margin: 0; line-height: 0; flex: none; position: relative; z-index: 1; }
-.wordmark svg { height: 112.5px; width: 281.25px; overflow: visible; }
-/* thin line from the wordmark through the symbol's dot to the edge of the page */
+/* thin line from the name through the symbol's dot to the edge of the page */
 .brand-line {
   position: absolute;
   top: 50%;
-  left: 305.25px;
+  left: 0;
   right: -100vw;
   height: 1px;
   background: var(--accent);
   opacity: 0.8;
   transform-origin: left;
 }
-/* alias page: the name written out, in the same thin style as the germ1 logo */
-.alias-name {
+/* the name (germ1 / D-Grüv) in Space Grotesk Light, one letter in orange */
+.hero-name {
   position: relative;
   z-index: 1;
   margin: 0;
@@ -105,9 +103,7 @@ a:focus-visible, summary:focus-visible { outline: 1px solid var(--accent); outli
   letter-spacing: -0.01em;
   color: var(--text);
 }
-[data-page="alias"] .brand-line { left: 0; }
 .name-accent { color: var(--accent); }
-.nav-alias { font-size: 1.25rem; font-weight: 400; line-height: 1; text-decoration: none; color: var(--text); }
 
 /* the dot of the symbol is a door between germ1 and the alias */
 .portal { cursor: pointer; outline: none; }
@@ -412,14 +408,18 @@ body.has-pbar { padding-bottom: 54px; }
 
 /* ---- Motion (only active when motion.js adds .motion to <html>) ---- */
 
-/* Opening animation (".intro" is set by the small script in the hero):
-   the logo draws itself, the line extends, the arrows close in on the dot */
-.intro .wordmark svg :is(path, circle) {
-  stroke-dasharray: var(--len) var(--len);
-  animation: draw 0.9s cubic-bezier(0.6, 0, 0.2, 1) both;
+/* Opening animation, same on germ1 and D-Grüv (".intro" is set by the small script in the hero):
+   the name appears letter by letter, the line extends, the arrows come in, the dot appears */
+.intro .hero-name .ch {
+  display: inline-block;
+  animation: letter-in 0.8s cubic-bezier(0.6, 0, 0.2, 1) both;
   animation-delay: calc(var(--i) * 110ms + 150ms);
 }
-@keyframes draw { from { stroke-dashoffset: var(--len); } to { stroke-dashoffset: 0; } }
+/* each letter is revealed from left to right, like a stroke being drawn */
+@keyframes letter-in {
+  from { clip-path: inset(-10% 100% -10% 0); opacity: 0.2; }
+  to { clip-path: inset(-10% 0 -10% 0); opacity: 1; }
+}
 .intro .brand-line { animation: grow 0.9s cubic-bezier(0.6, 0, 0.2, 1) 0.9s both; }
 @keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 .intro .brand-mark .arrow-top { animation: from-top 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 1.4s both; }

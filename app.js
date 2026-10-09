@@ -23,10 +23,14 @@
   // On index.html the name in the header and hero is the germ1 logo;
   // on alias.html it's written out as text.
   $("nav-name").setAttribute("aria-label", a.name);
+  // The name, letter by letter (for the opening animation), with one letter in orange:
+  // the last one for germ1 (the "1"), the first one for D-Grüv - see "accent" in content.js.
+  const letters = [...(a.name || "")];
+  const accentAt = a.accent === "last" ? letters.length - 1 : 0;
   document.querySelectorAll("[data-artist-name]").forEach((el) => {
-    // the first letter in orange, like the "1" of germ1
-    const [first = "", ...rest] = [...(a.name || "")];
-    el.innerHTML = `<span class="name-accent">${escape(first)}</span>${escape(rest.join(""))}`;
+    el.innerHTML = letters
+      .map((ch, i) => `<span class="ch${i === accentAt ? " name-accent" : ""}" style="--i:${i}">${escape(ch)}</span>`)
+      .join("");
   });
   // Tagline under the logo: only shown when one is set in content.js
   if (a.tagline && $("artist-tagline")) {

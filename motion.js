@@ -5,8 +5,8 @@
   const isAlias = document.documentElement.dataset.page === "alias";
 
   // ---- Logo symbol ----
-  // germ1 page: the arrows point in at the dot; closed at the top, they move apart as you scroll.
-  // Alias page: the symbol inverted, the arrows point out (up and down) away from the dot.
+  // germ1 page: the arrows point in at the dot. Alias page: the symbol inverted, they point out.
+  // On both, they move apart as you scroll.
   // Clicking the dot switches page with a transition.
   const top = document.querySelector(".brand-mark .arrow-top");
   const bottom = document.querySelector(".brand-mark .arrow-bottom");
@@ -42,30 +42,23 @@
   let switching = false;
 
   if (top && bottom && hero) {
-    if (isAlias) {
-      if (reduced) shape(0);
-      else {
-        shape(200); // arriving: the arrows come in from the top and bottom edges
-        tween(0, 800);
-      }
-    } else {
-      const fromScroll = () => {
-        if (switching) return;
-        const p = Math.min(Math.max(window.scrollY / (hero.offsetHeight * 0.45), 0), 1);
-        const e = 1 - (1 - p) * (1 - p); // ease out
-        shape(OPEN * e);
-      };
-      if (!reduced) {
-        let ticking = false;
-        window.addEventListener("scroll", () => {
-          if (!ticking) {
-            ticking = true;
-            requestAnimationFrame(() => { ticking = false; fromScroll(); });
-          }
-        }, { passive: true });
-      }
-      fromScroll();
+    // closed at the top of the page (the opening animation brings them in), apart as you scroll
+    const fromScroll = () => {
+      if (switching) return;
+      const p = Math.min(Math.max(window.scrollY / (hero.offsetHeight * 0.45), 0), 1);
+      const e = 1 - (1 - p) * (1 - p); // ease out
+      shape(OPEN * e);
+    };
+    if (!reduced) {
+      let ticking = false;
+      window.addEventListener("scroll", () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(() => { ticking = false; fromScroll(); });
+        }
+      }, { passive: true });
     }
+    fromScroll();
   }
 
   // ---- The dot: a door between germ1 and its alias ----

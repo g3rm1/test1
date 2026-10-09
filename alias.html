@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=900">
-  <title>alias</title>
+  <title>D-Grüv</title>
   <meta name="description" content="Gigs, DJ sets and productions.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,20 +13,8 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Brand graphics: the germ1 wordmark and the arrows symbol -->
+  <!-- Brand graphic: the arrows symbol -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-    <symbol id="wordmark" viewBox="0 0 200 80">
-      <g fill="none" stroke-width="4">
-        <g stroke="#2b2b2b">
-          <circle cx="22" cy="40" r="18"/>
-          <path d="M40 22 V74 H8"/>
-          <path d="M52 40 H88 A18 18 0 1 0 83.8 51.6"/>
-          <path d="M100 60 V22 M100 38 A17 17 0 0 1 117 21"/>
-          <path d="M128 60 V22 M128 34 A12 12 0 0 1 152 34 V60 M152 34 A12 12 0 0 1 176 34 V60"/>
-        </g>
-        <path stroke="#ff5a1f" d="M196 60 V4 M196 4 L183 22"/>
-      </g>
-    </symbol>
     <symbol id="mark" viewBox="0 0 120 180">
       <g fill="none" stroke="#ff5a1f" stroke-width="5">
         <path d="M60 0 V79 M28 47 L60 79 L92 47"/>
@@ -37,7 +25,7 @@
   </svg>
 
   <header class="nav">
-    <a href="#top" class="nav-logo nav-alias" id="nav-name" data-artist-name></a>
+    <a href="#top" class="nav-logo" id="nav-name" data-artist-name></a>
     <nav>
       <a href="#gigs">Gigs</a>
       <a href="#sets">Sets</a>
@@ -49,12 +37,12 @@
   <main id="top">
     <section class="hero">
       <div class="brand">
-        <h1 id="artist-name" class="alias-name" data-artist-name></h1>
+        <h1 id="artist-name" class="hero-name" data-artist-name></h1>
         <span class="brand-line" aria-hidden="true"></span>
         <svg class="brand-mark" viewBox="0 0 120 180">
           <g fill="none" stroke="#ff5a1f" stroke-width="5" aria-hidden="true">
-            <path class="arrow-top" d="M60 -200 V-121 M28 -168 L60 -200 L92 -168"/>
-            <path class="arrow-bottom" d="M60 380 V301 M28 348 L60 380 L92 348"/>
+            <path class="arrow-top" d="M60 0 V79 M28 32 L60 0 L92 32"/>
+            <path class="arrow-bottom" d="M60 180 V101 M28 148 L60 180 L92 148"/>
           </g>
           <!-- the dot leads back to germ1 (transition in motion.js) -->
           <a class="portal" href="index.html" aria-label="Back to germ1">
@@ -63,6 +51,10 @@
           </a>
         </svg>
       </div>
+      <script>
+        // Opening animation (styles.css, ".intro"), skipped for reduced motion
+        if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("intro");
+      </script>
       <p class="tagline" id="artist-tagline" hidden></p>
     </section>
 
