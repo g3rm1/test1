@@ -17,7 +17,7 @@
 
 window.SITE = {
   artist: {
-    name: "DJ NAME",
+    name: "germ1",
     tagline: "House · Techno · Disco",
     bio: "Write a few lines about yourself here: where you're based, the sound you play, the clubs and crews you work with.",
     // Optional photo: put the file in the "images/" folder, e.g. "images/me.jpg". Leave "" for none.
