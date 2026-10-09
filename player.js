@@ -131,7 +131,7 @@
     "beforeend",
     `<div class="pbar" id="pbar" hidden>
       <button class="pbar-play" type="button" aria-label="Play">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-play" d="M8 5 L19 12 L8 19 Z"/><path class="i-pause" d="M7 5 H10 V19 H7 Z M14 5 H17 V19 H14 Z"/></svg>
+        <svg class="px" viewBox="0 0 7 7" shape-rendering="crispEdges" aria-hidden="true"><path class="i-play" d="M2 0h1v7h-1z M3 1h1v5h-1z M4 2h1v3h-1z M5 3h1v1h-1z"/><path class="i-pause" d="M1 0h2v7h-2z M4 0h2v7h-2z"/></svg>
       </button>
       <div class="pbar-info"><span class="pbar-title"></span><span class="pbar-artist"></span></div>
       <span class="pbar-time pbar-pos">0:00</span>
@@ -140,7 +140,7 @@
       </div>
       <span class="pbar-time pbar-dur">–:––</span>
       <button class="pbar-close" type="button" aria-label="Stop and close player">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6 L18 18 M18 6 L6 18"/></svg>
+        <svg class="px" viewBox="0 0 7 7" shape-rendering="crispEdges" aria-hidden="true"><path d="M1 1h1v1h-1z M2 2h1v1h-1z M3 3h1v1h-1z M4 4h1v1h-1z M5 5h1v1h-1z M5 1h1v1h-1z M4 2h1v1h-1z M2 4h1v1h-1z M1 5h1v1h-1z"/></svg>
       </button>
     </div>`
   );

@@ -155,7 +155,11 @@ a:focus-visible, summary:focus-visible { outline: 1px solid var(--accent); outli
 .gig-where { margin: 0; color: var(--muted); }
 
 .past { margin-top: 40px; }
-.past summary { cursor: pointer; color: var(--muted); font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase; }
+.past summary { display: flex; align-items: center; gap: 8px; list-style: none; cursor: pointer; color: var(--muted); font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase; }
+.past summary::-webkit-details-marker { display: none; }
+/* pixel chevron: points right, turns down when the list is open */
+.px-chevron { width: 14px; height: 14px; fill: currentColor; transition: transform 0.2s steps(2); }
+.past[open] .px-chevron { transform: rotate(90deg); }
 .past summary:hover { color: var(--accent); }
 .past .gig { opacity: 0.55; }
 .past .gig:first-child { margin-top: 24px; }
@@ -201,13 +205,13 @@ a:focus-visible, summary:focus-visible { outline: 1px solid var(--accent); outli
   background: none;
   color: var(--accent);
   cursor: pointer;
-  transition: color 0.2s, transform 0.2s;
+  transition: opacity 0.15s;
 }
-.scp-play:hover:not(:disabled), .pbar-play:hover { transform: scale(1.08); }
+.scp-play:hover:not(:disabled), .pbar-play:hover { opacity: 0.7; }
 .scp-play:disabled { opacity: 0.4; cursor: wait; }
 .scp-play:focus-visible, .pbar-play:focus-visible, .pbar-close:focus-visible, .scp-wave:focus-visible, .pbar-track:focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
-.scp-play svg { width: 30px; height: 30px; fill: currentColor; }
-.pbar-play svg { width: 22px; height: 22px; fill: currentColor; }
+.scp-play svg { width: 28px; height: 28px; fill: currentColor; }
+.pbar-play svg { width: 21px; height: 21px; fill: currentColor; }
 .i-pause { display: none; }
 .is-playing .i-play { display: none; }
 .is-playing .i-pause { display: inline; }
@@ -250,9 +254,9 @@ body.has-pbar { padding-bottom: 72px; }
 .pbar-track::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 4px; margin-top: -2px; background: #4d4d4d; }
 .pbar-fill { position: absolute; left: 0; top: 50%; height: 4px; margin-top: -2px; width: 0; background: var(--accent); }
 .pbar-dot { position: absolute; top: 50%; left: 0; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: var(--accent); }
-.pbar-close { flex: none; width: 32px; height: 32px; padding: 6px; border: 0; background: none; color: var(--on-dark-muted); cursor: pointer; }
+.pbar-close { flex: none; display: grid; place-items: center; width: 32px; height: 32px; padding: 0; border: 0; background: none; color: var(--on-dark-muted); cursor: pointer; }
 .pbar-close:hover { color: var(--accent); }
-.pbar-close svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2; }
+.pbar-close svg { width: 21px; height: 21px; fill: currentColor; }
 
 /* ---- The germ1 bot: lives in the bottom-right corner; stands on the player bar when it's open ---- */
 .bot {

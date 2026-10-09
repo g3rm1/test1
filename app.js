@@ -97,7 +97,7 @@
       return `
         <div class="scp" data-sc-url="${escape(url)}">
           <button class="scp-play" type="button" aria-label="Play" disabled>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-play" d="M8 5 L19 12 L8 19 Z"/><path class="i-pause" d="M7 5 H10 V19 H7 Z M14 5 H17 V19 H14 Z"/></svg>
+            <svg class="px" viewBox="0 0 7 7" shape-rendering="crispEdges" aria-hidden="true"><path class="i-play" d="M2 0h1v7h-1z M3 1h1v5h-1z M4 2h1v3h-1z M5 3h1v1h-1z"/><path class="i-pause" d="M1 0h2v7h-2z M4 0h2v7h-2z"/></svg>
           </button>
           <div class="scp-main">
             <div class="scp-info"><span class="scp-artist">Loading…</span><span class="scp-time">0:00 / –:––</span></div>
