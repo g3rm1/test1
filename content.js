@@ -76,7 +76,7 @@ window.SITE = {
   // Same format as above. Empty sections are hidden automatically.
   alias: {
     artist: {
-      name: "alias", // the alias's name
+      name: "D-Grüv", // the alias's name
       bio: "Coming soon.",
       photo: "",
       bookingEmail: "",
@@ -85,7 +85,41 @@ window.SITE = {
         SoundCloud: "",
       },
     },
-    gigs: [],
+    // Example dates (made up): replace them with real ones
+    gigs: [
+      {
+        date: "2026-11-07",
+        time: "00:00",
+        venue: "Le Sous-Sol",
+        city: "Paris 10",
+        event: "Late Night Grooves",
+        tickets: "",
+      },
+      {
+        date: "2026-11-28",
+        time: "23:30",
+        venue: "Hangar 9",
+        city: "Bordeaux",
+        event: "D-Grüv All Night Long",
+        tickets: "",
+      },
+      {
+        date: "2027-01-17",
+        time: "22:00",
+        venue: "La Cave",
+        city: "Lille",
+        event: "Winter Warm-up",
+        tickets: "",
+      },
+      {
+        date: "2026-09-20",
+        time: "23:00",
+        venue: "Rooftop 21",
+        city: "Marseille",
+        event: "End of Summer",
+        tickets: "",
+      },
+    ],
     sets: [],
     tracks: [],
   },

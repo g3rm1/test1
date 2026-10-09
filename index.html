@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>html { background: #e4e4e4; }</style>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -78,6 +79,11 @@
         // Opening animation: measure each logo stroke so it can draw itself in (styles.css, ".intro").
         (function () {
           if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+          // Coming back from the alias through the dot: show the page as it is, no redraw,
+          // so it carries on from the transition.
+          try {
+            if (sessionStorage.getItem("germ1-portal")) { sessionStorage.removeItem("germ1-portal"); return; }
+          } catch (e) {}
           document.querySelectorAll(".wordmark svg path, .wordmark svg circle").forEach(function (el) {
             el.style.setProperty("--len", Math.ceil(el.getTotalLength()) + 1);
           });

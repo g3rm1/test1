@@ -29,6 +29,12 @@ html { font-size: 75%; } /* the whole site is sized at 75% (rem-based text follo
 }
 :root[data-page="alias"] .scp-wave canvas { --wave-rest: #4a4a4a; }
 
+/* smooth hand-over between germ1 and the alias page (browsers that support it) */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.35s; }
+}
+
 * { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }

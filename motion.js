@@ -39,10 +39,10 @@
 
   if (top && bottom && hero) {
     if (isAlias) {
-      shape(OPEN, 1);
-      if (!reduced) {
-        shape(320, 1); // arriving: the arrows come back in from the top and bottom edges
-        tween(OPEN, 1, 900);
+      if (reduced) shape(OPEN, 1);
+      else {
+        shape(200, 1); // arriving: the arrows come back in from the top and bottom edges
+        tween(OPEN, 1, 800);
       }
     } else {
       const fromScroll = () => {
@@ -69,6 +69,18 @@
   // alias -> germ1: the arrows close on the dot, light spreads from it.
   const portal = document.querySelector(".portal");
   if (portal && top && bottom && !reduced) {
+    // Load the other page in the background as soon as the dot is hovered, so the switch is instant.
+    const prefetch = () => {
+      if (document.querySelector("link[data-portal]")) return;
+      const l = document.createElement("link");
+      l.rel = "prefetch";
+      l.href = portal.getAttribute("href");
+      l.dataset.portal = "";
+      document.head.appendChild(l);
+    };
+    portal.addEventListener("pointerenter", prefetch);
+    portal.addEventListener("focus", prefetch);
+
     portal.addEventListener("click", (e) => {
       if (switching || e.metaKey || e.ctrlKey || e.shiftKey) return; // let "open in new tab" work
       e.preventDefault();
@@ -89,8 +101,17 @@
       document.body.appendChild(wipe);
       wipe.getBoundingClientRect(); // start the transition from the closed circle
       // let the arrows get going first, then the colour spreads from the dot
-      setTimeout(() => (wipe.style.clipPath = `circle(${radius}px at ${cx}px ${cy}px)`), isAlias ? 350 : 450);
-      setTimeout(() => (location.href = portal.getAttribute("href")), isAlias ? 1150 : 1300);
+      setTimeout(() => (wipe.style.clipPath = `circle(${radius}px at ${cx}px ${cy}px)`), isAlias ? 300 : 400);
+      // change page as soon as the screen is covered (the next page starts in the same colour)
+      let gone = false;
+      const go = () => {
+        if (gone) return;
+        gone = true;
+        try { sessionStorage.setItem("germ1-portal", "1"); } catch (err) {}
+        location.href = portal.getAttribute("href");
+      };
+      wipe.addEventListener("transitionend", go);
+      setTimeout(go, 1600); // safety net
     });
     // Coming back with the browser's Back button: undo the transition.
     window.addEventListener("pageshow", (e) => {
