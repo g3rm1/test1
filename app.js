@@ -155,4 +155,15 @@
   $("tracks-list").innerHTML = tracks.length
     ? tracks.map((t) => cardHtml(t, t.label)).join("")
     : `<p class="empty">Releases coming soon.</p>`;
+
+  // Hide sections with nothing in them (and their menu link); they come back
+  // on their own as soon as something is added in content.js.
+  const hideSection = (id) => {
+    $(id).hidden = true;
+    const link = document.querySelector(`.nav a[href="#${id}"]`);
+    if (link) link.hidden = true;
+  };
+  if (!gigs.length) hideSection("gigs");
+  if (!sets.length) hideSection("sets");
+  if (!tracks.length) hideSection("tracks");
 })();

@@ -269,7 +269,10 @@ body.has-pbar { padding-bottom: 54px; }
   width: 48px;
   height: 48px;
   margin-bottom: -6px; /* feet on the edge */
-  pointer-events: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
   transition: bottom 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .bot.on-bar { bottom: 54px; }
@@ -278,6 +281,22 @@ body.has-pbar { padding-bottom: 54px; }
 .bot .skin, .bot .arm-l, .bot .arm-r, .bot .leg-l, .bot .leg-r { fill: var(--accent); }
 .bot .eye { fill: #1e1e1e; transform-box: fill-box; transform-origin: center; }
 .bot .phones { fill: #8c8c8c; }
+.bot .arm-up { fill: var(--accent); display: none; }
+.bot:focus-visible { outline: 1px solid var(--accent); outline-offset: 4px; }
+
+/* startled when the mouse comes over it (not while dancing) */
+.bot:hover:not(.is-playing):not(.is-intro) svg { animation: bot-startle 0.45s steps(5); transform-origin: 50% 87.5%; }
+@keyframes bot-startle {
+  0% { transform: scale(1.12, 0.85); }
+  35% { transform: translateY(-4px) scale(0.92, 1.1); }
+  70% { transform: none; }
+  85% { transform: scale(1.06, 0.94); }
+  100% { transform: none; }
+}
+/* waving hello while waiting: the right arm goes up and swings */
+.bot.is-waving:not(.is-playing) .arm-r { display: none; }
+.bot.is-waving:not(.is-playing) .arm-up { display: inline; animation: bot-wave 0.4s steps(1) 3; }
+@keyframes bot-wave { 0% { transform: none; } 50% { transform: translate(1px, -1px); } }
 
 /* dancing at the beat while the set plays */
 .bot.is-playing:not(.is-intro) svg { animation: bot-sway calc(var(--beat) * 2) steps(1) infinite; transform-origin: 50% 100%; }

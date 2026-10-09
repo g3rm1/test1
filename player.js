@@ -101,9 +101,10 @@
     }
   };
 
-  // ---- The germ1 bot: always in the bottom-right corner, dances while a set plays ----
+  // ---- The germ1 bot: always in the bottom-right corner, dances while a set plays.
+  // Click it to play / pause; it follows the mouse with its eyes and waves now and then.
   document.body.insertAdjacentHTML("beforeend", `
-      <div class="bot" id="bot" aria-hidden="true">
+      <button class="bot" id="bot" type="button" aria-label="Play the set">
         <svg viewBox="0 0 16 16" shape-rendering="crispEdges">
           <g class="bot-legs">
             <rect class="leg-l" x="5" y="11" width="1" height="3"/>
@@ -113,18 +114,55 @@
             <rect class="arm-l" x="2" y="8" width="2" height="1"/>
             <rect class="arm-r" x="12" y="8" width="2" height="1"/>
             <rect class="skin" x="4" y="3" width="8" height="8"/>
-            <rect class="eye" x="6" y="5" width="1" height="2"/>
-            <rect class="eye" x="9" y="5" width="1" height="2"/>
+            <g class="bot-eyes">
+              <rect class="eye" x="6" y="5" width="1" height="2"/>
+              <rect class="eye" x="9" y="5" width="1" height="2"/>
+            </g>
             <rect class="phones" x="4" y="1" width="8" height="1"/>
             <rect class="phones" x="3" y="2" width="1" height="2"/>
             <rect class="phones" x="12" y="2" width="1" height="2"/>
             <rect class="phones" x="2" y="4" width="2" height="3"/>
             <rect class="phones" x="12" y="4" width="2" height="3"/>
+            <rect class="arm-up" x="14" y="5" width="1" height="3"/>
           </g>
         </svg>
-      </div>
+      </button>
 `);
   const bot = document.getElementById("bot");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const botBusy = () => bot.classList.contains("is-playing") || bot.classList.contains("is-intro");
+
+  // Click: play / pause the set that's playing, or the first one on the page.
+  bot.addEventListener("click", () => {
+    const p = active || (players[0] && players[0].ctrl);
+    if (p && p.widget) p.widget.toggle();
+  });
+
+  if (!reducedMotion) {
+    // Eyes follow the mouse (one pixel left or right) while it's not dancing.
+    const eyes = bot.querySelector(".bot-eyes");
+    let mouseX = null, eyeTick = false;
+    const lookAt = () => {
+      eyeTick = false;
+      const r = bot.getBoundingClientRect();
+      const dx = mouseX === null || botBusy() ? 0 : mouseX < r.left - 8 ? -1 : mouseX > r.right + 8 ? 1 : 0;
+      eyes.style.transform = dx ? `translateX(${dx}px)` : "";
+    };
+    document.addEventListener("mousemove", (e) => {
+      mouseX = e.clientX;
+      if (!eyeTick) { eyeTick = true; requestAnimationFrame(lookAt); }
+    }, { passive: true });
+
+    // Waves every 10–15 seconds while nothing is playing.
+    const scheduleWave = () => setTimeout(() => {
+      if (!botBusy() && !document.hidden) {
+        bot.classList.add("is-waving");
+        setTimeout(() => bot.classList.remove("is-waving"), 1200);
+      }
+      scheduleWave();
+    }, 10000 + Math.random() * 5000);
+    scheduleWave();
+  }
 
   // ---- Fixed player bar ----
   document.body.insertAdjacentHTML(
@@ -213,6 +251,7 @@
         if (active === this) {
           bar.classList.toggle("is-playing", this.playing);
           bot.classList.toggle("is-playing", this.playing);
+          bot.setAttribute("aria-label", this.playing ? "Pause the set" : "Play the set");
           q(".pbar-play").setAttribute("aria-label", label);
           q(".pbar-title").textContent = this.title;
           q(".pbar-artist").textContent = this.artist;
