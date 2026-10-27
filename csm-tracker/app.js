@@ -97,7 +97,7 @@
           <td class="account">${escape(r.account)}</td>
           <td>${escape(r.country)}</td>
           <td>${escape(r.program)}</td>
-          <td><span class="tag">${escape(r.contact)}</span></td>
+          <td><span class="tag${r.contact === "Offboarding" ? " off" : ""}">${escape(r.contact)}</span></td>
           <td>${fmtDate(r.due)}</td>
           <td class="num">${fmtMoney(r.revM1)}</td>
           <td class="num">${fmtMoney(r.revCurrent)}</td>

@@ -9,6 +9,8 @@
     { match: "growth", label: "Growth", everyMonths: 3 },
     { match: "nvidia", label: "Nvidia", everyMonths: 3 },
   ];
+  // Every program: an offboarding meeting this many months before the end date
+  const OFFBOARDING_MONTHS_BEFORE_END = 1;
 
   // Report columns, as named in the SFDC export
   const COLUMNS = {
@@ -103,19 +105,25 @@
     return RULES.find((r) => p.includes(r.match)) || null;
   }
 
-  // Follow-up dates for one client: [{ date, label }]
+  // Follow-up dates for one client: [{ date, label }], ending with the offboarding meeting
   function touchpoints(rule, start, end) {
+    const offboarding = addMonths(end, -OFFBOARDING_MONTHS_BEFORE_END);
+    let followUps;
     if (rule.midpoint) {
       const days = Math.floor((end - start) / DAY / 2);
-      return [{ date: new Date(start.getTime() + days * DAY), label: "Mi-parcours" }];
+      followUps = [{ date: new Date(start.getTime() + days * DAY), label: "Mi-parcours" }];
+    } else {
+      const dates = [];
+      for (let i = 1; ; i++) {
+        const d = addMonths(start, i * rule.everyMonths);
+        if (d >= end) break;
+        dates.push(d);
+      }
+      followUps = dates.map((date, i) => ({ date, label: `Follow-up ${i + 1}/${dates.length}` }));
     }
-    const dates = [];
-    for (let i = 1; ; i++) {
-      const d = addMonths(start, i * rule.everyMonths);
-      if (d >= end) break;
-      dates.push(d);
-    }
-    return dates.map((date, i) => ({ date, label: `Follow-up ${i + 1}/${dates.length}` }));
+    // No follow-up once the offboarding is due; very short programs get no offboarding before they start
+    followUps = followUps.filter((t) => t.date < offboarding);
+    return offboarding > start ? [...followUps, { date: offboarding, label: "Offboarding" }] : followUps;
   }
 
   // ---- Report ----

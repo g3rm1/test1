@@ -32,6 +32,10 @@ Séparateur `;`, `,` ou tabulation ; dates `JJ/MM/AAAA` ou `AAAA-MM-JJ` ; montan
 | Early  | 6 mois | 1 follow-up à mi-parcours (milieu entre début et fin) |
 | Growth | 1 an   | tous les 3 mois après le début : M+3, M+6, M+9 |
 | Nvidia | 1 an   | tous les 3 mois après le début : M+3, M+6, M+9 |
+| Tous   |        | **RDV d'offboarding 1 mois avant la date de fin** |
+
+Un follow-up qui tomberait après la date d'offboarding n'est pas proposé.
+Le délai d'offboarding se règle avec `OFFBOARDING_MONTHS_BEFORE_END` dans `schedule.js`.
 
 Les comptes avec un programme non reconnu ou des dates illisibles apparaissent dans
 l'encart **« à vérifier »** en bas de la page.
