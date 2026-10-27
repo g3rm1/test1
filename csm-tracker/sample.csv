@@ -1,0 +1,7 @@
+STP Program;CLI COUNTRY;Nom du compte;Propriétaire du compte: Nom complet;CSM Owner: Nom complet;Program Start Date;Program End Date;ELM CURRENT MONTH REVENUE;ELT TOTAL REV M-1;Dernière activité
+Early;France;Exemple Alpha;Julie Martin;Camille Durand;01/09/2026;28/02/2027;1 250,00 €;980,50 €;14/10/2026
+Growth;Germany;Exemple Beta;Paul Weber;Camille Durand;15/02/2026;14/02/2027;12 400,00 €;11 870,00 €;02/09/2026
+Nvidia;France;Exemple Gamma;Julie Martin;Alex Moreau;10/08/2026;09/08/2027;45 000,00 €;38 200,00 €;20/10/2026
+Growth;Spain;Exemple Delta;Lucia Ruiz;Alex Moreau;05/05/2026;04/05/2027;3 100,00 €;4 560,00 €;
+Early;Italy;Exemple Epsilon;Marco Rossi;Camille Durand;01/03/2026;31/08/2026;600,00 €;720,00 €;30/05/2026
+Scale;France;Exemple Zeta;Julie Martin;Camille Durand;01/01/2026;31/12/2026;0,00 €;150,00 €;

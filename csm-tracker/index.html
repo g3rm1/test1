@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Suivi CSM</title>
+  <style>
+    :root {
+      --bg: #f6f7f9; --card: #fff; --text: #1d2330; --muted: #667085; --line: #e3e6eb;
+      --accent: #2f6fed; --accent-soft: #e8efff; --warn: #b54708; --warn-soft: #fff4e5; --done: #98a2b3;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #12151b; --card: #1b1f27; --text: #e6e8ec; --muted: #98a2b3; --line: #2c323d;
+        --accent: #7aa2ff; --accent-soft: #1f2a44; --warn: #f5b158; --warn-soft: #3a2a14; --done: #5d6675;
+      }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+    main { max-width: 1280px; margin: 0 auto; padding: 24px 16px 48px; }
+    h1 { font-size: 22px; margin: 0 0 4px; }
+    .sub { color: var(--muted); margin: 0 0 20px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .toolbar label { display: flex; gap: 6px; align-items: center; color: var(--muted); }
+    input, select, button { font: inherit; color: var(--text); background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; }
+    button { cursor: pointer; }
+    button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .drop { border: 2px dashed var(--line); border-radius: 10px; padding: 18px; text-align: center; color: var(--muted); }
+    .drop.over { border-color: var(--accent); background: var(--accent-soft); }
+    .status { color: var(--muted); margin-left: auto; }
+    .error { color: var(--warn); background: var(--warn-soft); border-radius: 6px; padding: 10px 12px; margin-top: 12px; }
+    .summary { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 12px; }
+    .summary b { font-size: 20px; display: block; }
+    .summary span { color: var(--muted); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+    th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .03em; }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+    td.account { font-weight: 600; white-space: normal; min-width: 160px; }
+    tr.done td { color: var(--done); }
+    tr.done td.account { text-decoration: line-through; }
+    .tag { display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 12px; }
+    .empty { color: var(--muted); padding: 24px; text-align: center; }
+    details summary { cursor: pointer; color: var(--warn); font-weight: 600; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Suivi CSM — clients à contacter</h1>
+    <p class="sub">Importe le rapport SFDC : la liste du mois est triée par revenu M-1 décroissant. Le fichier reste dans ton navigateur, rien n'est envoyé.</p>
+
+    <section class="card">
+      <div class="drop" id="drop">
+        Glisse ici l'export du rapport SFDC (.csv) ou
+        <button class="primary" id="pick">Importer le rapport</button>
+        <input type="file" id="file" accept=".csv,.tsv,.txt,text/csv" hidden>
+      </div>
+      <div class="error" id="error" hidden></div>
+    </section>
+
+    <section class="card" id="view" hidden>
+      <div class="toolbar">
+        <label>Mois <input type="month" id="month"></label>
+        <label>CSM Owner <select id="csm"><option value="">Tous</option></select></label>
+        <button id="export">Exporter la liste (.csv)</button>
+        <span class="status" id="status"></span>
+      </div>
+    </section>
+
+    <section class="card" id="results" hidden>
+      <div class="summary">
+        <div><b id="count">0</b><span>clients à contacter</span></div>
+        <div><b id="done">0</b><span>contactés</span></div>
+        <div><b id="rev">0</b><span>revenu M-1 cumulé</span></div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>✓</th><th class="num">#</th><th>Compte</th><th>Pays</th><th>Programme</th><th>Contact</th><th>Date prévue</th>
+              <th class="num">Rev M-1</th><th class="num">Rev mois</th><th>Dernière activité</th><th>CSM Owner</th><th>Propriétaire</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <p class="empty" id="empty" hidden>Aucun client à contacter ce mois-ci.</p>
+    </section>
+
+    <section class="card" id="issues" hidden>
+      <details>
+        <summary id="issues-title"></summary>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Compte</th><th>Programme</th><th>Début</th><th>Fin</th><th>Problème</th></tr></thead>
+            <tbody id="issue-rows"></tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  </main>
+  <script src="schedule.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
