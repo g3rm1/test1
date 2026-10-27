@@ -4,48 +4,66 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Suivi CSM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500&display=swap" rel="stylesheet">
   <style>
+    /* Colors, radii and fonts from Scaleway's Ultraviolet design system (console theme) */
     :root {
-      --bg: #f6f7f9; --card: #fff; --text: #1d2330; --muted: #667085; --line: #e3e6eb;
-      --accent: #2f6fed; --accent-soft: #e8efff; --warn: #b54708; --warn-soft: #fff4e5; --done: #98a2b3;
+      --bg: #f9f9fa; --card: #ffffff; --text: #222638; --body: #3f4250; --muted: #727683; --line: #e9eaeb; --border: #d9dadd;
+      --accent: #641cb3; --accent-strong: #8c40ef; --accent-strong-hover: #792dd4; --accent-soft: #f1eefc;
+      --warn: #7c5400; --warn-soft: #fff6e6; --danger: #b3144d; --danger-soft: #ffebf2; --success: #22674e; --done: #b5b7bd;
+      --radius: 4px; --radius-lg: 8px;
+      --font: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-heading: "Space Grotesk", "Century Gothic", Futura, sans-serif;
     }
     @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #12151b; --card: #1b1f27; --text: #e6e8ec; --muted: #98a2b3; --line: #2c323d;
-        --accent: #7aa2ff; --accent-soft: #1f2a44; --warn: #f5b158; --warn-soft: #3a2a14; --done: #5d6675;
+      :root:not([data-theme="light"]) {
+        --bg: #151a2d; --card: #191f33; --text: #ffffff; --body: #b8bac0; --muted: #7e8291; --line: #484b5a; --border: #626672;
+        --accent: #bf96f8; --accent-strong: #8d40ee; --accent-strong-hover: #964cf6; --accent-soft: #2d1c51;
+        --warn: #d39700; --warn-soft: #362200; --danger: #ff6d9e; --danger-soft: #3e0b1d; --success: #3cb589; --done: #626672;
       }
     }
+    :root[data-theme="dark"] {
+      --bg: #151a2d; --card: #191f33; --text: #ffffff; --body: #b8bac0; --muted: #7e8291; --line: #484b5a; --border: #626672;
+      --accent: #bf96f8; --accent-strong: #8d40ee; --accent-strong-hover: #964cf6; --accent-soft: #2d1c51;
+      --warn: #d39700; --warn-soft: #362200; --danger: #ff6d9e; --danger-soft: #3e0b1d; --success: #3cb589; --done: #626672;
+    }
     * { box-sizing: border-box; }
-    body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
-    main { max-width: 1280px; margin: 0 auto; padding: 24px 16px 48px; }
-    h1 { font-size: 22px; margin: 0 0 4px; }
-    .sub { color: var(--muted); margin: 0 0 20px; }
-    .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+    body { margin: 0; background: var(--bg); color: var(--body); font: 14px/1.5 var(--font); }
+    main { max-width: 1280px; margin: 0 auto; padding: 32px 16px 48px; }
+    h1, h2 { font-family: var(--font-heading); font-weight: 500; color: var(--text); }
+    h1 { font-size: 28px; line-height: 1.2; margin: 0 0 6px; }
+    .sub { color: var(--muted); margin: 0 0 24px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 16px; }
     .toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
     .toolbar label { display: flex; gap: 6px; align-items: center; color: var(--muted); }
-    input, select, button { font: inherit; color: var(--text); background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; }
-    button, .btn { cursor: pointer; }
-    .btn { font: inherit; border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; text-decoration: none; }
-    button.primary, .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-    .drop { border: 2px dashed var(--line); border-radius: 10px; padding: 18px; text-align: center; color: var(--muted); }
+    input, select, button, .btn { font: inherit; color: var(--text); background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 6px 12px; min-height: 32px; }
+    input:focus-visible, select:focus-visible, button:focus-visible, .btn:focus-visible, a:focus-visible { outline: 2px solid var(--accent-strong); outline-offset: 1px; }
+    button, .btn { cursor: pointer; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; }
+    button:hover, .btn:hover { border-color: var(--muted); }
+    button.primary, .btn.primary { background: var(--accent-strong); border-color: var(--accent-strong); color: #fff; }
+    button.primary:hover, .btn.primary:hover { background: var(--accent-strong-hover); border-color: var(--accent-strong-hover); }
+    input[type="checkbox"] { accent-color: var(--accent-strong); min-height: 0; padding: 0; }
+    .drop { border: 1px dashed var(--border); border-radius: var(--radius-lg); padding: 20px; text-align: center; color: var(--muted); }
     .drop.over { border-color: var(--accent); background: var(--accent-soft); }
     .status { color: var(--muted); margin-left: auto; }
-    .error { color: var(--warn); background: var(--warn-soft); border-radius: 6px; padding: 10px 12px; margin-top: 12px; }
+    .error { color: var(--danger); background: var(--danger-soft); border-radius: var(--radius); padding: 10px 12px; margin-top: 12px; }
     .summary { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 12px; }
-    .summary b { font-size: 20px; display: block; }
+    .summary b { font: 500 24px/1.2 var(--font-heading); color: var(--text); display: block; }
     .summary span { color: var(--muted); }
     .table-wrap { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; }
     th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
     th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .03em; }
     td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
-    td.account { font-weight: 600; white-space: normal; min-width: 160px; }
+    td.account { font-weight: 500; color: var(--text); white-space: normal; min-width: 160px; }
     tr.done td { color: var(--done); }
     tr.done td.account { text-decoration: line-through; }
-    .tag { display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 12px; }
+    .tag { display: inline-block; padding: 1px 8px; border-radius: var(--radius); font-weight: 500; background: var(--accent-soft); color: var(--accent); font-size: 12px; }
     .tag.off { background: var(--warn-soft); color: var(--warn); }
     .empty { color: var(--muted); padding: 24px; text-align: center; }
-    details summary { cursor: pointer; color: var(--warn); font-weight: 600; }
+    details summary { cursor: pointer; color: var(--warn); font-weight: 500; }
     td.account a { color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); }
     td.account a:hover { color: var(--accent); border-color: var(--accent); }
 
@@ -54,24 +72,24 @@
     .back { color: var(--accent); text-decoration: none; display: inline-block; margin-bottom: 12px; }
     .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px 24px; }
     .facts span { display: block; color: var(--muted); font-size: 12px; }
-    .facts b { font-weight: 600; }
+    .facts b { font-weight: 500; color: var(--text); }
     .timeline { list-style: none; margin: 0; padding: 0 0 0 22px; position: relative; }
     .timeline::before { content: ""; position: absolute; left: 6px; top: 6px; bottom: 6px; width: 2px; background: var(--line); }
     .timeline li { position: relative; padding: 0 0 20px; }
     .timeline li::before { content: ""; position: absolute; left: -22px; top: 4px; width: 10px; height: 10px; border-radius: 50%;
       background: var(--card); border: 2px solid var(--muted); }
-    .timeline li.done::before { background: var(--done); border-color: var(--done); }
-    .timeline li.upcoming::before { border-color: var(--accent); background: var(--accent); }
+    .timeline li.done::before { background: var(--success); border-color: var(--success); }
+    .timeline li.upcoming::before { border-color: var(--accent-strong); background: var(--accent-strong); }
     .timeline li.late::before { border-color: var(--warn); background: var(--warn); }
-    .timeline li.today::before { border-color: var(--accent); background: var(--card); border-style: dashed; }
+    .timeline li.today::before { border-color: var(--accent-strong); background: var(--card); border-style: dashed; }
     .timeline li.today { color: var(--accent); font-weight: 600; }
     .t-head { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
     .t-date { color: var(--muted); min-width: 92px; font-variant-numeric: tabular-nums; }
     .t-state { font-size: 12px; color: var(--muted); }
     .t-state.late { color: var(--warn); }
     .t-head label { color: var(--muted); font-size: 12px; display: flex; gap: 4px; align-items: center; margin-left: auto; }
-    .mail { margin-top: 10px; border: 1px solid var(--line); border-radius: 8px; padding: 12px; background: var(--bg); }
-    .mail .subject { font-weight: 600; margin-bottom: 8px; }
+    .mail { margin-top: 10px; border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 12px; background: var(--bg); }
+    .mail .subject { font-weight: 600; color: var(--text); margin-bottom: 8px; }
     .mail pre { white-space: pre-wrap; font: inherit; margin: 0 0 10px; }
     .mail .actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
     .mail .lang { color: var(--muted); font-size: 12px; margin-left: auto; }
