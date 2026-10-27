@@ -46,4 +46,18 @@ Pour ajouter ou changer une règle, modifie `RULES` en haut de `schedule.js`, pa
 { match: "scale", label: "Scale", everyMonths: 2 },
 ```
 
+## Fiche client
+
+Clique sur le nom d'un compte dans la liste pour ouvrir sa fiche :
+- les infos du rapport (programme, pays, dates, revenus, dernière activité, owners) ;
+- la **timeline** : début, follow-ups, offboarding, fin, avec un repère « Aujourd'hui » et l'état de chaque contact
+  (fait / à venir / passé non coché) ; la case « Contacté » est la même que dans la liste ;
+- pour chaque contact **à venir** (ce mois-ci ou plus tard, pas encore coché), un **mail type** pour proposer le rendez-vous :
+  le prochain est affiché, les suivants sont repliés (« Voir le mail »).
+  Boutons : *Ouvrir dans ma messagerie* (le mail est pré-rempli, il reste à ajouter le destinataire), *Copier le texte*, *Copier l'objet*.
+
+Le mail est en **français si `CLI COUNTRY` = France**, en anglais sinon.
+Il propose la semaine de la date prévue (ou la semaine prochaine si elle est déjà passée) et est signé du CSM Owner.
+Les textes se modifient dans `templates.js`.
+
 `sample.csv` contient des clients fictifs pour essayer la page.

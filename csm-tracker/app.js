@@ -35,10 +35,11 @@
     }
     $("error").hidden = true;
     report = res;
+    report.clients.forEach((c, i) => (c.id = i));
     $("status").textContent = `${fileName} · ${res.clients.length + res.issues.length} comptes · importé le ${new Date(importedAt).toLocaleString("fr-FR")}`;
     fillCsmFilter();
     $("view").hidden = $("results").hidden = false;
-    render();
+    route();
     return true;
   }
 
@@ -94,7 +95,7 @@
         return `<tr class="${isDone ? "done" : ""}">
           <td><input type="checkbox" data-key="${escape(key)}" ${isDone ? "checked" : ""} aria-label="Contacté"></td>
           <td class="num">${i + 1}</td>
-          <td class="account">${escape(r.account)}</td>
+          <td class="account"><a href="#client/${r.id}">${escape(r.account)}</a></td>
           <td>${escape(r.country)}</td>
           <td>${escape(r.program)}</td>
           <td><span class="tag${r.contact === "Offboarding" ? " off" : ""}">${escape(r.contact)}</span></td>
@@ -119,13 +120,108 @@
       .join("");
   }
 
-  $("rows").onchange = (e) => {
+  // Ticking "contacté" works the same in the list and on the client page
+  const onTick = (e) => {
     const key = e.target.dataset.key;
     if (!key) return;
     if (e.target.checked) done[key] = true;
     else delete done[key];
     store.set("csm.done", done);
-    render();
+    route();
+  };
+  $("rows").onchange = onTick;
+  $("c-timeline").onchange = onTick;
+
+  // ---- Client page (#client/<id>) ----
+  const todayUtc = () => { const d = new Date(); return new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())); };
+
+  function route() {
+    const m = location.hash.match(/^#client\/(\d+)$/);
+    const client = m && report && report.clients[Number(m[1])];
+    $("client-view").hidden = !client;
+    $("list-view").hidden = !!client;
+    if (client) renderClient(client);
+    else { document.title = "Suivi CSM"; render(); }
+  }
+  window.addEventListener("hashchange", () => { route(); window.scrollTo(0, 0); });
+
+  function renderClient(c) {
+    document.title = `${c.account} · Suivi CSM`;
+    $("c-name").textContent = c.account;
+    $("c-meta").textContent = [c.program, c.country].filter(Boolean).join(" · ");
+    const facts = [
+      ["Programme", c.program], ["Pays", c.country], ["Début", fmtDate(c.start)], ["Fin", fmtDate(c.end)],
+      ["Rev M-1", fmtMoney(c.revM1)], ["Rev mois en cours", fmtMoney(c.revCurrent)], ["Dernière activité", c.lastActivity || "—"],
+      ["CSM Owner", c.csmOwner || "—"], ["Propriétaire du compte", c.accountOwner || "—"],
+    ];
+    $("c-facts").innerHTML = facts.map(([k, v]) => `<div><span>${k}</span><b>${escape(v)}</b></div>`).join("");
+
+    const today = todayUtc();
+    const monthStart = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), 1));
+    const events = [
+      { date: c.start, label: "Début du programme" },
+      ...c.touchpoints.map((t) => ({ ...t, contact: true })),
+      { date: c.end, label: "Fin du programme" },
+    ];
+    // "Aujourd'hui" marker, placed in date order (after events of the same day)
+    const at = events.findIndex((e) => e.date > today);
+    events.splice(at < 0 ? events.length : at, 0, { date: today, label: "Aujourd'hui", today: true });
+
+    let nextShown = false; // the next email is shown open, later ones folded
+    $("c-timeline").innerHTML = events
+      .map((e) => {
+        if (e.today) return `<li class="today"><div class="t-head"><span class="t-date">${fmtDate(e.date)}</span>Aujourd'hui</div></li>`;
+        if (!e.contact) return `<li><div class="t-head"><span class="t-date">${fmtDate(e.date)}</span>${escape(e.label)}</div></li>`;
+        const key = doneKey({ account: c.account, due: e.date });
+        const isDone = !!done[key];
+        // Upcoming = not done yet and due this month or later: that's when the email is useful
+        const state = isDone ? "done" : e.date < monthStart ? "late" : "upcoming";
+        const stateText = { done: "Fait", late: "Passé · non coché", upcoming: e.date < today ? "Ce mois-ci · en retard" : "À venir" }[state];
+        return `<li class="${state}">
+          <div class="t-head">
+            <span class="t-date">${fmtDate(e.date)}</span>
+            <span class="tag${e.label === "Offboarding" ? " off" : ""}">${escape(e.label)}</span>
+            <span class="t-state${state === "late" ? " late" : ""}">${stateText}</span>
+            <label><input type="checkbox" data-key="${escape(key)}" ${isDone ? "checked" : ""}> Contacté</label>
+          </div>
+          ${state !== "upcoming" ? "" : nextShown ? `<details class="later"><summary>Voir le mail</summary>${mailBlock(c, e, today)}</details>` : ((nextShown = true), mailBlock(c, e, today))}
+        </li>`;
+      })
+      .join("");
+  }
+
+  function mailBlock(c, touchpoint, today) {
+    const mail = window.Templates.emailFor(c, touchpoint, today);
+    const href = `mailto:?subject=${encodeURIComponent(mail.subject)}&body=${encodeURIComponent(mail.body)}`;
+    return `<div class="mail" data-subject="${escape(mail.subject)}" data-body="${escape(mail.body)}">
+      <div class="subject">Objet : ${escape(mail.subject)}</div>
+      <pre>${escape(mail.body)}</pre>
+      <div class="actions">
+        <a class="btn primary" href="${escape(href)}">Ouvrir dans ma messagerie</a>
+        <button type="button" data-copy="body">Copier le texte</button>
+        <button type="button" data-copy="subject">Copier l'objet</button>
+        <span class="lang">${mail.lang === "fr" ? "Français (pays : France)" : "Anglais (pays hors France)"}</span>
+      </div>
+    </div>`;
+  }
+
+  $("c-timeline").onclick = async (e) => {
+    const btn = e.target.closest("[data-copy]");
+    if (!btn) return;
+    const text = btn.closest(".mail").dataset[btn.dataset.copy];
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      // Older browsers / blocked clipboard: copy through a hidden textarea
+      const ta = Object.assign(document.createElement("textarea"), { value: text });
+      document.body.append(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+    }
+    const label = btn.textContent;
+    btn.textContent = "Copié ✓";
+    setTimeout(() => (btn.textContent = label), 1500);
   };
 
   // ---- Export ----
